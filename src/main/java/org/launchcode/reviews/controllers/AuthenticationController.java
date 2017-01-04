@@ -56,7 +56,7 @@ public class AuthenticationController extends AbstractController {
 			HttpSession session = request.getSession();
 			setUserInSession(session, user);
 			
-			return "redirect:/newpost";
+			return "redirect:/";
 		}
 		
 	}
