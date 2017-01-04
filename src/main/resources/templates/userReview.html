@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="template :: dochead">
+</head>
+<body>
+
+	<div th:replace="template :: navigation"></div>
+
+	
+	<h2 style="text-align: center;" class="review-title"><a th:href="'/movie/' + ${review.movieID}"  th:text="${review.title}"></a></h2>
+	
+	
+	<div style="text-align: center;">
+	Average Rating
+	<p th:text="${avgRating}"></p>
+	Rating
+	<p th:text="${review.rating}"></p>
+	<p class="review-body" th:text="${review.body}"></p>
+
+	<p class="review-author">
+   	 	written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by <a th:href="'/' + ${review.author.username}" th:text="${review.author.username}"></a>
+	</p>
+	<a th:href="'/edit/' + ${review.author.username} + '/' + ${review.uid}">Edit Post</a>
+	</div>
+	
+	 
+	 
+
+</body>
+</html>

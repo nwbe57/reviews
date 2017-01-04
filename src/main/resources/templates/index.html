@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="template :: dochead">
+</head>
+<body>
+
+<div th:replace="template :: navigation"></div>
+
+<h1 style="text-align: center;"><a class="author" th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
+
+<div style="text-align: center;" th:each="review : ${reviews}">
+
+	<h2><a th:href="'/movie/' + ${review.movieID}"  th:text="${review.title}"></a></h2>
+	<input type="hidden" th:value="${review.movieID}"></input>
+	
+<!-- 	<a th:text="${avgRating[reviews.indexOf(review)]}"></a> &nbsp;AVERAGE RATING
+	<a th:text="${ratingTotal}"></a>
+	<a th:text="${denom}"></a><br></br> -->
+	
+	<a th:text="${review.rating}"></a>&nbsp;RATING<br></br><br></br>
+	<a th:text="${review.body}"></a>
+	<p class="review-author">Review#<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"  th:text="${review.uid}"></a>written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by <a th:href="'/' + ${review.author.username}" th:text="${review.author.username}"></a></p>
+
+</div>
+
+</body>
+</html>

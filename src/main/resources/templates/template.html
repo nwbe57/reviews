@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:fragment="dochead">
+	<!-- <link th:href="@{/css/styles.css}" rel="stylesheet" /> -->
+	
+	<title>Reviews</title>
+</head>
+
+<body>
+
+<nav style="font-size:25px;" th:fragment="navigation">
+	
+	    <a href="/login">Login&nbsp;&nbsp;</a>
+	    <a href="/logout">Logout&nbsp;&nbsp;</a>
+		<a href="/">Home&nbsp;&nbsp;</a>
+        <a href="/movie">Search by Movie&nbsp;&nbsp;</a>
+        <a href="/person">Search by Person</a>
+    
+    	<p th:text="${error}"></p>
+</nav>
+
+</body>
+</html>

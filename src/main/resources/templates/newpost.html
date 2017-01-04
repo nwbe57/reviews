@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="template :: dochead">
+</head>
+<body>
+
+	<div th:replace="template :: navigation"></div>
+
+	<form method="post">
+	    
+	    <h1 style="text-align: center;" th:value="${title}" th:text="${title}"><a>&nbsp;</a>Review!</h1>
+	    
+	    <div style="text-align: center;"> 
+		    <a>Rating (0.0 - 10.0)</a><br></br>
+		    <label>		 		        
+		        <input type="text" name="rating" th:value="${rating}"></input>
+		    </label>
+	    </div>
+	    <br></br>
+	    
+	    <div style="text-align: center;"> 
+		    <a>Review</a><br></br>
+		    <label>
+		        <textarea name="body" th:text="${body}"></textarea>
+		    </label>
+	    </div>
+	    
+	    <div style="text-align: center;"> 
+		    <button type="submit">Create</button>
+	    </div>
+	    
+	</form>
+
+</body>
+</html>
