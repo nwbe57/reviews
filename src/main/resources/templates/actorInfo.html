@@ -24,19 +24,8 @@
 	     <div style="background-color:56d8d8;">
 	        <img style="width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
 	     </div>  
-	     
-<!-- 	     <div style="width:64%; float:right;" th:each="year : ${years}">
-	    	
-	    	<button type="submit" name="button" 
-	    		th:value="${years.indexOf(year)}"
-	    		th:text="${titles.get(years.indexOf(year))}"></button>
-	    	
-	    	<a th:text="${year}"></a>
-	    	<a> - </a>
-	    	<a th:text="${jobs.get(years.indexOf(year))}"></a>
-	    </div>  -->
-	     
-	     
+	
+	    
 	    <div style="width:64%; float:right;" th:each="title : ${titles}">
 	    	
 	    	<button type="submit" name="button" 
@@ -49,7 +38,7 @@
 	    	<a th:text="${jobs.get(titles.indexOf(title))}"></a>
 	    	
 	    </div>
-	    
+	
 	        
 	        <div class="error" th:text="${error}"></div>	
 	

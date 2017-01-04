@@ -96,7 +96,7 @@ public class ActorController extends AbstractController{
 		if(picture == null || picture.equals("")  || picture.equals("null") || picture.equals("\"\"")){
 			picture = "Not found";
 		}
-		
+	
 		model.addAttribute("name", name);
 		model.addAttribute("year", year);
 		model.addAttribute("bio", bio);
@@ -119,8 +119,10 @@ public class ActorController extends AbstractController{
 		
 		
 	} catch (IOException e) {
-		
-	}  
+		String error = "No result found for " + actorID;
+    	model.addAttribute("error", error);
+    	return "template";
+	}
 		
 		return "actorInfo";
 		

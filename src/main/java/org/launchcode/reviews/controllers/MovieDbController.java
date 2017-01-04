@@ -168,7 +168,7 @@ public class MovieDbController extends AbstractController{
 		} catch (FileNotFoundException e) {
 			String error = "There is no movie with ID#" + movieID;
 			model.addAttribute("error", error);
-			return "err";
+			return "template";
 		}
 		
 		return "movieInfo";
