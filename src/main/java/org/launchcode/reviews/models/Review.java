@@ -1,5 +1,6 @@
 package org.launchcode.reviews.models;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class Review extends AbstractEntity{
 		this.movieID = MovieID;
 		this.rating = rating;
 		this.author = author;
+		this.avgRating = 0.0;
 		this.created = new Date();
 		this.modified = this.created;
 		
@@ -70,6 +72,10 @@ public class Review extends AbstractEntity{
 		this.body = body;
 	}
 	
+	public void setMovieID(String movieID) {
+		this.movieID = movieID;
+	}
+	
 	@NotNull
 	@Column(name = "movieID")
 	public String getMovieID() {
@@ -86,21 +92,22 @@ public class Review extends AbstractEntity{
 		return rating;
 	}
 	
-	public double getAvgRating(String movieID) {
+	public void setAvgRating(double avgRating) {
+		this.avgRating = avgRating;
+	}
+	
+	public double getAvgRating(String movieID, List<Review> reviewsByTitle) {
+		DecimalFormat df = new DecimalFormat("#.##");
 		
-		List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
 		Double ratingTotal = 0.0;
 		
 		for(Review review: reviewsByTitle){
 			ratingTotal += review.getRating();
 		}
-		avgRating = ratingTotal/reviewsByTitle.size();
+		String x = df.format(ratingTotal/reviewsByTitle.size());
+		avgRating = Double.valueOf(x);
 		
 		return avgRating;
-	}
-	
-	public void setMovieID(String movieID) {
-		this.movieID = movieID;
 	}
 	
 	@ManyToOne

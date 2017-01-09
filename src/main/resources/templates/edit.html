@@ -19,7 +19,7 @@
 	        <div>review</div>
 	        <textarea name="body" th:value="${review.body}" th:text="${review.body}"></textarea>
 	    </label>
-	    <div class="error" th:text="${error}"></div>
+	   
 	    <p class="review-author">
    	 		written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by <a th:href="'/' + ${review.author.username}" th:text="${review.author.username}"></a>
 		</p>

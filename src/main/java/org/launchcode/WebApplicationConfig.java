@@ -18,5 +18,6 @@ public class WebApplicationConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor( authenticationInterceptor() );
     }
+    
 
 }

@@ -1,6 +1,7 @@
 package org.launchcode.reviews.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ public class ReviewController extends AbstractController {
 	@RequestMapping(value = "/newpost/{movieID}", method = RequestMethod.GET)
 	public String newPostForm(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
+		List<String> movieInfo = Movie.getMovieInfo(movieID);
 		
 		User user = getUserFromSession(request.getSession());
 		if(user == null){
@@ -31,7 +33,7 @@ public class ReviewController extends AbstractController {
 			return "template";
 		}
 		
-        String title = Movie.getTitle(movieID);
+        String title = movieInfo.get(0);
         model.addAttribute("title", title);
 		model.addAttribute("movieID", movieID);
 		
@@ -41,9 +43,11 @@ public class ReviewController extends AbstractController {
 	@RequestMapping(value = "/newpost/{movieID}", method = RequestMethod.POST)
 	public String newPost(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
+		List<String> movieInfo = Movie.getMovieInfo(movieID);
+		
 		String body = request.getParameter("body");
 		String error = request.getParameter("error");
-        String title = Movie.getTitle(movieID);
+		String title = movieInfo.get(0);
         Double rating = 0.0;
 		User author = getUserFromSession(request.getSession());
 
@@ -78,6 +82,7 @@ public class ReviewController extends AbstractController {
 		} else {
 			
 			Review review = new Review(title, movieID, rating, body, author);
+
 			reviewDao.save(review);
 		
 			
@@ -115,12 +120,8 @@ public class ReviewController extends AbstractController {
 		
 		String movieID = review.getMovieID();
 		List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
-		Double ratingTotal = 0.0;
-		
-		for(int i = 0; i < reviewsByTitle.size(); i++){
-			ratingTotal += reviewsByTitle.get(i).getRating();
-		}
-		Double avgRating = ratingTotal/reviewsByTitle.size();
+
+		double avgRating = review.getAvgRating(movieID, reviewsByTitle);
 					
 		if(userReviews.contains(review)){
 			
@@ -148,13 +149,7 @@ public class ReviewController extends AbstractController {
 	
 		String movieID = review.getMovieID();
 		List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
-		Double ratingTotal = 0.0;
-	
-	    	
-	    for(int i = 0; i < reviewsByTitle.size(); i++){
-			ratingTotal += reviewsByTitle.get(i).getRating();
-		}
-		Double avgRating = ratingTotal/reviewsByTitle.size();
+		Double avgRating = review.getAvgRating(movieID, reviewsByTitle);
 		model.addAttribute("avgRating", avgRating);
 			
 		return "review";
@@ -180,25 +175,20 @@ public class ReviewController extends AbstractController {
 			
 			List<Review> reviews = user.getReviews();	
 			String author = user.getUsername();
+			List<Double >ratings = new ArrayList<Double>();
 			
 			String movieID = "";
 			for(Review review: reviews){
 				movieID = review.getMovieID();
 			
-			}
-			
 			model.addAttribute("movieID", movieID);
 			
 			List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
-			Double ratingTotal = 0.0;
+			Double avgRating = review.getAvgRating(movieID, reviewsByTitle);
+			ratings.add(avgRating);
 			
-			for(int i = 0; i < reviewsByTitle.size(); i++){
-				ratingTotal += reviewsByTitle.get(i).getRating();
-			}
-			Double avgRating = ratingTotal/reviewsByTitle.size();
-			
-			model.addAttribute("avgRating", avgRating);
-			
+		}
+			model.addAttribute("ratings", ratings);
 			model.addAttribute("reviews", reviews);
 			model.addAttribute("author", author);
 		

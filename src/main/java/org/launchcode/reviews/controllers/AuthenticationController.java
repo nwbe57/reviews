@@ -72,7 +72,7 @@ public class AuthenticationController extends AbstractController {
 		
 		String password = request.getParameter("password");
 		String username = request.getParameter("username");
-		String error = request.getParameter("error");
+		//String user_error = request.getParameter("error");
 		
 		model.addAttribute("username", username);
 		
@@ -83,14 +83,14 @@ public class AuthenticationController extends AbstractController {
 		
 		if(!users.contains(user)){
 			
-			error = "Invalid Username";
-			model.addAttribute("error", error);
+			String user_error = "Invalid Username";
+			model.addAttribute("user_error", user_error);
 	    	return "login";
 	    	
 		} else if(!user.isMatchingPassword(password)){
 			
-			error = "Invalid Password";
-			model.addAttribute("error", error);
+			String pass_error = "Invalid Password";
+			model.addAttribute("pass_error", pass_error);
 			return "login";
 		
 		} else {

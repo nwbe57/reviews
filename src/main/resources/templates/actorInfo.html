@@ -6,7 +6,7 @@
 
 	<div th:replace="template :: navigation"></div>
 
-	<form method="post">
+	<form method="post" style="background-color:56d8d8;">
 	
 		<div style="width:64%; float:right;">
 	    	
@@ -21,25 +21,41 @@
 	        FILMOGRAPHY
 	    </div>
 	       
-	     <div style="background-color:56d8d8;">
+	     <div style="font-size:35px;">
 	        <img style="width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
 	     </div>  
 	
+	    <div style="width:64%; float:right;">
+	    <table style="display: inline-block;">
 	    
-	    <div style="width:64%; float:right;" th:each="title : ${titles}">
-	    	
-	    	<button type="submit" name="button" 
-	    		
-	    		th:value="${titles.indexOf(title)}"
-	    		th:text="${title}"></button>
-	    	
-	    	<a th:text="${years.get(titles.indexOf(title))}"></a>
-	    	<a> - </a>
-	    	<a th:text="${jobs.get(titles.indexOf(title))}"></a>
-	    	
-	    </div>
-	
-	        
+		    <tr th:each="title : ${titles}">
+		    	
+		    	<td><button style="width:100%" type="submit" name="button" th:value="${titles.indexOf(title)}"
+		    	                                        th:text="${title}"></button></td>
+		    			
+		    <!-- 	<td th:text="${years.get(titles.indexOf(title))}"></td> -->
+		    	
+		    </tr>
+		</table>
+		
+		 <table style="display: inline-block;">
+	    
+		    <tr th:each="year : ${years}">
+		    			
+		    	<td height="25" th:text="${year}"></td>
+		    	
+		    </tr>
+		</table>
+		
+		<table style="display: inline-block;">  
+		    <tr th:each="job : ${jobs}">
+		    	
+		    	<td height="25" th:text="${job}"></td>
+		   
+		    </tr>
+	    
+	    </table>
+	    </div> 
 	        <div class="error" th:text="${error}"></div>	
 	
 	</form>

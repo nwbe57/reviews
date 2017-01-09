@@ -1,6 +1,7 @@
 package org.launchcode.reviews.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +29,18 @@ public class ActorController extends AbstractController{
 	try {
 	
 		String name = request.getParameter("name");
+		String actorID = "";
+		String pic = "";
 		
 		List<List<String>> nameResults = Actor.getActorID(name);
 		
 		List<String> nameArray = nameResults.get(0);
 		List<String> actorIdArray = nameResults.get(1);
+		List<String> picResults = new ArrayList<String>();
+		List<String> picArray = new ArrayList<String>();
 		
 		String button = request.getParameter("button");
 	
-    	
     	if(nameArray.size() == 0){
     		String error = "No result found, must type a valid name";
     		model.addAttribute("error", error);
@@ -49,15 +53,19 @@ public class ActorController extends AbstractController{
     	
     	for(int i = 0; i < nameArray.size(); i++){
     		
+    		actorID = actorIdArray.get(i);
+    		picResults = Actor.getActorInfo(actorID);
+    		pic = picResults.get(4);
+    	    picArray.add(pic);
+    		
 	    	if(button.equals(String.valueOf(i))){
-	    		
-	    		String actorID = "";
-	    		actorID = actorIdArray.get(i);
-	    		model.addAttribute("actorID", actorID);
 	    		
 	    		return "redirect:/person/" + actorID;
 	    	}
     	}
+    	
+    	model.addAttribute("actorID", actorID);
+		model.addAttribute("picArray", picArray);
     	
     } catch (IOException e) {
     	String error = "No result found, must type a valid name";
@@ -65,7 +73,7 @@ public class ActorController extends AbstractController{
     	return "template";
     }
     		
-		return "person";
+	return "person";
 		
 	}
 	
@@ -111,6 +119,7 @@ public class ActorController extends AbstractController{
 		List<String> movieIDs = castInfo.get(1);
 		List<String> years = castInfo.get(2);
 		List<String> jobs = castInfo.get(3);
+			
 		
 		model.addAttribute("titles", titles);
 		model.addAttribute("movieIDs", movieIDs);

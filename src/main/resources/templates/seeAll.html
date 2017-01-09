@@ -4,10 +4,15 @@
 </head>
 <body>
 
+
 <div th:replace="template :: navigation"></div>
 <div>
 <h1 style="text-align: center;"><a class="author" th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
 
+<h2 style="text-align: center;">
+	<a>Average Rating:&nbsp;</a>
+	<a th:text="${avgRating}"></a>
+</h2>
 
 <table style="width: 100%; text-align: center;">
 	<tr th:each="review : ${reviews}">
@@ -16,9 +21,6 @@
 			<h2>
 				<a th:href="'/movie/' + ${review.movieID}" 
 		           th:text="${review.title}"></a>
-		        <a>(</a>
-		        <a th:text="${ratings.get(reviews.indexOf(review))}"></a>
-		        <a>avg. rating)</a>
 		    </h2>
 		
 			<input type="hidden" th:value="${review.movieID}"></input>

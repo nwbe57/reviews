@@ -5,14 +5,17 @@
 <body>
 
 	<div th:replace="template :: navigation"></div>
-
 	
-	<h2 style="text-align: center;" class="review-title"><a th:href="'/movie/' + ${review.movieID}"  th:text="${review.title}"></a></h2>
-	
+		    <h2 style="text-align: center;" class="review-title">
+				<a th:href="'/movie/' + ${review.movieID}" 
+		           th:text="${review.title}"></a>
+		        <a>(</a>
+		        <a th:text="${avgRating}"></a>
+		        <a>avg. rating)</a>
+		    </h2>
 	
 	<div style="text-align: center;">
-	Average Rating
-	<p th:text="${avgRating}"></p>
+
 	Rating
 	<p th:text="${review.rating}"></p>
 	<p class="review-body" th:text="${review.body}"></p>

@@ -3,6 +3,7 @@ package org.launchcode.reviews.controllers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,7 @@ public class MovieDbController extends AbstractController{
 		List<String> resultArray = titleResults.get(0);
 		List<String> idArray = titleResults.get(1);
 		List<String> yrArray = titleResults.get(2);
+		List<String> picArray = titleResults.get(3);
 		
     	if(resultArray.size() == 0){
     		String error = "No result found, must type valid title";
@@ -48,11 +50,18 @@ public class MovieDbController extends AbstractController{
     		return "template";
     	}
     	
-
+    	for(int i = 0; i < yrArray.size(); i++){
+    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
+    			String noYr = "Yr Not Found";
+    			yrArray.set(i, noYr);
+    		}
+    	}
+    
 		model.addAttribute("preTitle", preTitle);   //displays the user provided title to be
     	model.addAttribute("resultArray", resultArray);  //searched, and provides the results from 
     	model.addAttribute("idArray", idArray);              //the tMDB database.
     	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
     	
     	try {
 
@@ -86,11 +95,10 @@ public class MovieDbController extends AbstractController{
 	@RequestMapping(value = "/movie/{movieID}", method = RequestMethod.GET)
 	public String movieIDGet(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
+		DecimalFormat df = new DecimalFormat("#.##");
+		
 		try {
 			        
-	        String title = Movie.getTitle(movieID);
-	        model.addAttribute("title", title);
-	      
 	     //code below returns movieInfo - year, tagline, overview, picture
 	        
 			List<String> movieInfo = Movie.getMovieInfo(movieID);
@@ -100,21 +108,26 @@ public class MovieDbController extends AbstractController{
 			for(int i = 0; i < reviewsByTitle.size(); i++){
 				ratingTotal += reviewsByTitle.get(i).getRating();
 			}
-			Double avgRating = ratingTotal/reviewsByTitle.size();
+			String x = df.format(ratingTotal/reviewsByTitle.size());
+			Double avgRating = 0.0;
 		
 			if(reviewsByTitle.size() != 0){
+				avgRating = Double.valueOf(x);
 				model.addAttribute("avgRating", avgRating);
 			} else {
 				String noAvg = "Film not reviewed yet";
 				model.addAttribute("noAvg", noAvg);
 			}
-						
-	        String year = movieInfo.get(0);
-	        String tagline = movieInfo.get(1);
-	        String overview = movieInfo.get(2);
-	        String picture = movieInfo.get(3);
+				
+			String title = movieInfo.get(0);
+	        String year = movieInfo.get(1);
+	        String tagline = movieInfo.get(2);
+	        String overview = movieInfo.get(3);
+	        String picture = movieInfo.get(4);
+	        
+	        	model.addAttribute("title", title);
 	        	
-	        	if(year == null ||year.equals("\"\"")){
+	        	if(year == null || year.equals("\"\"") || year.equals("")){
 	        		year = "No Release Date Found";
 	        	}
 	        	
@@ -143,24 +156,13 @@ public class MovieDbController extends AbstractController{
 	        List<String> nameArray = castInfo.get(1);
 	        List<String> idArray = castInfo.get(2);
 	        
+	        
 	        model.addAttribute("charArray", charArray);   
 	    	model.addAttribute("idArray", idArray);  
 			model.addAttribute("nameArray", nameArray);
 			
-			String dirName = "";
-			String dirID = "";
-			
-			try{
-			
-			List<String> director = Movie.getDirector(movieID);
-			
-			dirName = director.get(0);
-			dirID = director.get(1);
-			
-			} catch (IndexOutOfBoundsException e) {
-				dirName = "Not found";
-				dirID = "Not found";
-			}
+			List<String> dirName = castInfo.get(3);
+			List<String> dirID = castInfo.get(4);
 			
 			model.addAttribute("dirName", dirName);
 			model.addAttribute("dirID", dirID);
@@ -180,6 +182,7 @@ public class MovieDbController extends AbstractController{
 	public String movieID(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
 		List<List<String>> castInfo = Movie.getCast(movieID);
+		List<String> movieInfo = Movie.getMovieInfo(movieID);
         
         List<String> idArray = castInfo.get(2);
 		
@@ -196,44 +199,46 @@ public class MovieDbController extends AbstractController{
 	    		return "redirect:/person/" + actorID ;
 	    	}
     	}	
-		List<String> director = Movie.getDirector(movieID);
-		
-		String dirName = "";
+		List<String> directorName = castInfo.get(3);
+		List<String> directorID = castInfo.get(4);
+	
 		String dirID = "";
 		
-		try{
-		
-		dirName = director.get(0);
-		dirID = director.get(1);
-		
-		} catch (IndexOutOfBoundsException e) {
-			return "redirect:/movie/" + movieID;
-		}
-		
-		dirName = director.get(0);
-		dirID = director.get(1);
-		
-		if(button.equals(dirName)){
-			return"redirect:/person/" + dirID ;
+		for(int i = 0; i < directorName.size(); i++){
+			if(button.equals(directorName.get(i))){
+				dirID = directorID.get(i);
+				return"redirect:/person/" + dirID ;
+			}
 		}
 		
 		if(button.equals("see_all")){
+			
 			List<Review> reviews = reviewDao.findByMovieID(movieID);
+			String error = "";
+			String author = movieInfo.get(0);
+			
 			if(reviews.isEmpty()){
-				String error = "This film hasn't been reviewed";
-				String author = Movie.getTitle(movieID);
-				model.addAttribute("author", author);
+				error = "This film hasn't been reviewed";
 				model.addAttribute("error", error);
 			}
-			model.addAttribute("reviews", reviews);
-			return "index";
-		}
-		
-    	model.addAttribute("movieID", movieID);
 			
+			for(Review review: reviews){
+				movieID = review.getMovieID();
+			
+				Double avgRating = review.getAvgRating(movieID, reviews);
+			
+				model.addAttribute("reviews", reviews);
+				model.addAttribute("avgRating", avgRating);
+				
+			}
+			
+			model.addAttribute("author", author);
+			
+			return "seeAll";
+		
+		}	
 		return "redirect:/newpost/{movieID}";
 		
 	}
 	
-
 }

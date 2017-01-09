@@ -21,14 +21,29 @@
 	    <br></br>
 	    
 	  
-	     <div th:each="name : ${nameArray}">
+<!-- 	     <div th:each="name : ${nameArray}">
 
 	    	<button type="submit" name="button" 
 	    		
 	    		th:value="${nameArray.indexOf(name)}"
 	    		th:text="${name}"></button>
-	    </div>
-	   
+	    </div> -->
+	    
+	     <table style="display: inline-block;">
+		<tr th:each="pic : ${picArray}">
+			<td height="131"><img style="height:131px;" th:src="${pic}" alt="No Picture Found"></img></td>
+		</tr>
+		</table>
+	    
+	    <table style="display: inline-block;">
+	    <tr th:each="name : ${nameArray}">
+	    	
+	    	<td height="135"><button style="width:100%" type="submit" name="button" 
+	    		
+	    		th:value="${nameArray.indexOf(name)}"
+	    		th:text="${name}"></button></td>	
+	    </tr>
+		</table>
 	    
 	</form>
 	

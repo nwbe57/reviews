@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -135,7 +137,7 @@ public class Actor {
         Matcher matcherID = patternID.matcher(nameResults);
         
         List<String> nameArray = new ArrayList<String>();
-        List<String> idArray = new ArrayList<String>();  
+        List<String> idArray = new ArrayList<String>(); 
         
         while (matcher.find()) {                                 	  
         	String namesFound = matcher.group(1);
@@ -145,7 +147,8 @@ public class Actor {
         	String IDsFound = matcherID.group(1);
         	idArray.add(IDsFound);
         }
-        
+     
+          
         resultArray.add(nameArray);
         resultArray.add(idArray);
 		
@@ -208,7 +211,8 @@ public class Actor {
         List<String> filmArray = new ArrayList<String>();
         List<String> idArray = new ArrayList<String>();   
         List<String> yrArray = new ArrayList<String>();     
-        List<String> charArray = new ArrayList<String>();       
+        List<String> charArray = new ArrayList<String>(); 
+       
         
         while (matcher.find()) {                                 	  
         	String titlesFound = matcher.group(1);
@@ -222,26 +226,83 @@ public class Actor {
         	String yrsFound = matcherYR.group(1);
         	yrArray.add(yrsFound);	
         }
-        while(matcherChar.find()){
-        	String charsFound = matcherChar.group(1);
-        	charArray.add(charsFound);	
-        }
-        while(matcherJob.find()){
+        while(matcherChar.find()){                    
+        	String charsFound = matcherChar.group(1);     //character names and job titles
+        	String chars2 = charsFound.replace("\\", "");  //both get added to charArray
+        	charArray.add(chars2);	                        //because the raw results always
+        }                                                    //print out crew credits after all
+        while(matcherJob.find()){                             // the acting credits
         	String jobsFound = matcherJob.group(1);
         	charArray.add(jobsFound);	
         }
         
+		for(int i = 0; i < filmArray.size(); i++){
+			if(filmArray.get(i).length() > 40){
+				String q = filmArray.get(i).substring(0, 30); 
+				filmArray.set(i, q);
+			}
+			if(charArray.get(i).length() > 40){
+				String z = charArray.get(i).substring(0, 30); 
+				charArray.set(i, z);
+			}
+		}
+        
+        String chars = "";
+        String yrss = "";
+        String film = "";
+        String ids = "";
+        for(int i = 0; i < filmArray.size(); i++){
+
+        	String yrs = yrArray.get(i).replace("\"", "0");
+        	String yrs2 = yrs.replace("-", "0");
+
+        	if(yrArray.get(i).equals("null") || yrArray.get(i) == null){
+        		yrss = yrArray.get(i) + ";000000000000";
+        		film = filmArray.get(i) + ";000000000000";
+        		chars = charArray.get(i) + ";000000000000";
+        		ids = idArray.get(i) + ";000000000000";
+        	} else {
+        		yrss = yrArray.get(i) + ";" + yrs2;
+        		film = filmArray.get(i) + ";" + yrs2;
+        		chars = charArray.get(i) + ";" + yrs2;
+        		ids = idArray.get(i) + ";" + yrs2;
+        	}
+             	
+        	filmArray.set(i, film);
+        	charArray.set(i, chars);
+        	yrArray.set(i, yrss);
+        	idArray.set(i, ids);
+        }
+        
+        Collections.sort(filmArray, Comparator.comparing(s -> s.split(";")[1]));
+        Collections.sort(charArray, Comparator.comparing(s -> s.split(";")[1]));
+        Collections.sort(yrArray, Comparator.comparing(s -> s.split(";")[1]));
+        Collections.sort(idArray, Comparator.comparing(s -> s.split(";")[1]));
+        
+        Collections.reverse(filmArray);
+        Collections.reverse(charArray);
+        Collections.reverse(yrArray);
+        Collections.reverse(idArray);
+        
+		for(int j = 0; j < filmArray.size(); j ++){
+			String xx = filmArray.get(j);
+			filmArray.set(j, xx.substring( 0, xx.length() - 13));
+			String y = yrArray.get(j);
+			yrArray.set(j, y.substring( 0, y.length() - 13));
+			String z = charArray.get(j);
+			charArray.set(j, z.substring( 0, z.length() - 13));
+			String zz = idArray.get(j);
+			idArray.set(j, zz.substring( 0, zz.length() - 13));
+		}	
         
         filmography.add(filmArray);
         filmography.add(idArray);
         filmography.add(yrArray);
         filmography.add(charArray);
         
-       
-		return filmography;
+        return filmography;
 		
 	}
 	
-	
-	
+
 }
