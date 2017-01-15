@@ -2,24 +2,69 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head th:fragment="dochead">
 
-	<!-- <link th:href="@{/css/normalize.css}" rel="stylesheet" />
-	<link th:href="@{/css/styles.css}" rel="stylesheet" /> -->
+	<link th:href="@{/css/a/styles.css}" type="text/css" rel="stylesheet"></link>
+	
+	<style type="text/css" th:inline="text">
+  		body {
+    		background-image: url([[@{/images/b/audience.jpg}]]);	
+  		}
+	</style>
 	
 	<title>Reviews</title>
 </head>
 
-<body>
 
-<nav style="font-size:25px; background: #FFFFFF;" th:fragment="navigation">
+<body id="body">
+	<div th:fragment="top-nav">
+		<table class="banner">
+			  <tr>
+				<td><img style="width:100%;" th:src="@{/images/b/film-reel.jpg}" alt="film-reel"></img></td>
+				<td><img style="width:100%;" th:src="@{/images/b/film-reel.jpg}" alt="film-reel"></img></td>
+				<td><img style="width:100%;" th:src="@{/images/b/film-reel.jpg}" alt="film-reel"></img></td>
+			  </tr>
+		</table>
+		
+		<nav th:fragment="navigation"> 
+
 	
-	    <a href="/login">Login&nbsp;&nbsp;</a>
-	    <a href="/logout">Logout&nbsp;&nbsp;</a>
-		<a href="/">Home&nbsp;&nbsp;</a>
-        <a href="/movie">Search by Movie&nbsp;&nbsp;</a>
-        <a href="/person">Search by Person</a>
+	    	<div style="float:left; width:24%; display:inline-block;">
+				<a href="/">&nbsp;Home</a>
+			</div>
+			
+			<div style="text-align: center; width:52%; display:inline-block;">
+		        <a href="/movie">Search by Movie&nbsp;&nbsp;</a>
+		        <a href="/person">Search by Person</a>
+		    </div>
+       
+        	<div style="float:right; text-align: right; width:24%; display:inline-block;">
+		        <a href="/login">Login&nbsp;&nbsp;</a>
+			    <a href="/logout">Logout&nbsp;</a>
+			</div>
     
-    	<p th:text="${error}"></p>
-</nav>
+		
+		</nav>
+	
+	</div>
+	
+	
+		<nav id="bottom-nav" th:fragment="bottom-nav"> 
 
+	
+	    	<div style="float:left; width:24%; display:inline-block;">
+				<a href="/">&nbsp;Home</a>
+			</div>
+			
+			<div style="text-align: center; width:52%; display:inline-block;">
+		        <a href="/movie">Search by Movie&nbsp;&nbsp;</a>
+		        <a href="/person">Search by Person</a>
+		    </div>
+       
+        	<div style="float:right; text-align: right; width:24%; display:inline-block;">
+		        <a href="/login">Login&nbsp;&nbsp;</a>
+			    <a href="/logout">Logout&nbsp;</a>
+			</div>
+    
+		
+		</nav>
 </body>
 </html>

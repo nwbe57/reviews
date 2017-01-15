@@ -47,7 +47,7 @@ public class MovieDbController extends AbstractController{
     	if(resultArray.size() == 0){
     		String error = "No result found, must type valid title";
     		model.addAttribute("error", error);
-    		return "template";
+    		return "err";
     	}
     	
     	for(int i = 0; i < yrArray.size(); i++){
@@ -55,6 +55,9 @@ public class MovieDbController extends AbstractController{
     			String noYr = "Yr Not Found";
     			yrArray.set(i, noYr);
     		}
+    		if(!picArray.get(i).contains("jpg")){
+        		picArray.set(i, "/images/b/noImage.jpg");
+        	}
     	}
     
 		model.addAttribute("preTitle", preTitle);   //displays the user provided title to be
@@ -80,13 +83,13 @@ public class MovieDbController extends AbstractController{
 		} catch (IndexOutOfBoundsException e) {
 			String error = "Result not found";
 			model.addAttribute("error", error);
-			return "template";
+			return "err";
 		}
 		
 	} catch (IOException e) {
 		String error = "No result found, must type valid title";
 		model.addAttribute("error", error);
-		return "template";
+		return "err";
 	}			
     	return "movie";
     	
@@ -96,6 +99,7 @@ public class MovieDbController extends AbstractController{
 	public String movieIDGet(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
+		model.addAttribute("movieID", movieID);
 		
 		try {
 			        
@@ -124,6 +128,8 @@ public class MovieDbController extends AbstractController{
 	        String tagline = movieInfo.get(2);
 	        String overview = movieInfo.get(3);
 	        String picture = movieInfo.get(4);
+	        String rated = Movie.getContentRating(movieID);
+	        String trailer = Movie.getTrailer(movieID);
 	        
 	        	model.addAttribute("title", title);
 	        	
@@ -143,9 +149,14 @@ public class MovieDbController extends AbstractController{
 	        		overview = "No Overview Found";
 	        	}
 	        	
+	        	if(!picture.contains("jpg")){
+	        		picture = "/images/b/noImage.jpg";
+	        	}
+	        	
 	        	model.addAttribute("overview", overview);
-
 	        	model.addAttribute("picture", picture);
+	        	model.addAttribute("rated", rated);
+	        	model.addAttribute("trailer", trailer);
 	        	
 		
 		//code below returns cast/director names as links to their individual pages
@@ -170,7 +181,7 @@ public class MovieDbController extends AbstractController{
 		} catch (FileNotFoundException e) {
 			String error = "There is no movie with ID#" + movieID;
 			model.addAttribute("error", error);
-			return "template";
+			return "err";
 		}
 		
 		return "movieInfo";
@@ -241,4 +252,20 @@ public class MovieDbController extends AbstractController{
 		
 	}
 	
+	
+	@RequestMapping(value = "/trailer/{movieID}", method = RequestMethod.GET)
+	public String getTrailerLink(HttpServletRequest request, Model model, @PathVariable String movieID) throws IOException {
+		
+		String trailer = Movie.getTrailer(movieID);
+		List<String> titleArray = Movie.getMovieInfo(movieID);
+		String title = titleArray.get(0);
+		
+		model.addAttribute("movieID", movieID);
+		model.addAttribute("title", title);
+		model.addAttribute("trailer", trailer);
+		
+		return "trailer";
+	}
+	
+
 }

@@ -5,6 +5,8 @@
 <body>
 
 	<div th:replace="template :: navigation"></div>
+	
+	<div id="wrapper2">
 
 	<form method="post">
 	
@@ -19,15 +21,6 @@
 	    
 	    <div class="error" th:text="${error}"></div>
 	    <br></br>
-	    
-	  
-<!-- 	     <div th:each="name : ${nameArray}">
-
-	    	<button type="submit" name="button" 
-	    		
-	    		th:value="${nameArray.indexOf(name)}"
-	    		th:text="${name}"></button>
-	    </div> -->
 	    
 	     <table style="display: inline-block;">
 		<tr th:each="pic : ${picArray}">
@@ -46,6 +39,10 @@
 		</table>
 	    
 	</form>
+	
+	</div>
+	
+	<div th:replace="template :: navigation"></div>
 	
 
 </body>

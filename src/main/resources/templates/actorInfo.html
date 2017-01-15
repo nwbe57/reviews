@@ -2,9 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="template :: dochead">
 </head>
-<body>
 
-	<div th:replace="template :: navigation"></div>
+<div th:replace="template :: navigation"></div>
+
+<body style="background: linear-gradient(
+    to right, 
+    #F34F26 0%, 
+    #F34F26 36%, 
+    #FFF55F 36%, 
+    #FFF55F 100%
+  );">
 
 	<form method="post" style="background-color:56d8d8;">
 	
@@ -13,7 +20,7 @@
 	    	
 	        <h1 th:value="${name}" th:text="${name}"></h1><br></br>
 	        BIRTHDATE
-	        <p th:value="${year}" th:text="${year}"></p>
+	        <p th:value="${year}" th:text="${year}"></p><br></br>
 	        HOMETOWN
 	        <p th:value="${hometown}" th:text="${hometown}"></p><br></br>
 	        BIOGRAPHY
@@ -61,4 +68,6 @@
 	</form>
 	
 </body>
+
+
 </html>

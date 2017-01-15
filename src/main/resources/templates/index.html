@@ -3,14 +3,15 @@
 <head th:replace="template :: dochead">
 </head>
 <body>
+	
+<div th:replace="template :: top-nav"></div>
 
-<div th:replace="template :: navigation"></div>
-<div>
-<h1 style="text-align: center;"><a class="author" th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
+<div id="wrapper">
+<h1 style="text-align: center;"><a th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
 
 
 <table style="width: 100%; text-align: center;">
-	<tr th:each="review : ${reviews}">
+	<tr class="allReviews" th:each="review : ${reviews}">
 		<td>
 		
 			<h2>
@@ -27,7 +28,7 @@
 			
 			<a th:text="${review.body}"></a>
 			
-		    <p class="review-author">Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"
+		    <p>Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"
 		       th:text="${review.uid}"></a>
 		       &nbsp;written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by 
 		       <a th:href="'/' + ${review.author.username}" 
@@ -35,7 +36,11 @@
 		</td>
 	</tr>
 </table>
+
 </div>
 
 </body>
+
+<div th:replace="template :: navigation"></div>
+
 </html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="template :: dochead">
+</head>
+<body>
+
+	<div th:replace="template :: navigation"></div>
+	
+	<div id="wrapper3">
+	
+			<h3><a th:href="'/movie/' + ${movieID}">BACK TO MOVIE PAGE</a></h3>
+	
+			<h1><a th:text="${title}"></a>&nbsp;Trailer</h1>
+			
+	        <iframe width="75%" height="75%"
+				th:src="${trailer}" allowfullscreen="allowfullscreen">
+		    </iframe> 
+	
+	
+	</div>
+	
+</body>
+</html>

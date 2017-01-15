@@ -6,13 +6,17 @@
 
 
 <div th:replace="template :: navigation"></div>
-<div>
+
+<div id="wrapper3">
+
 <h1 style="text-align: center;"><a class="author" th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
 
 <h2 style="text-align: center;">
 	<a>Average Rating:&nbsp;</a>
 	<a th:text="${avgRating}"></a>
 </h2>
+
+<p th:text="${error}"></p>
 
 <table style="width: 100%; text-align: center;">
 	<tr th:each="review : ${reviews}">
@@ -38,6 +42,8 @@
 	</tr>
 </table>
 </div>
+
+<div th:replace="template :: navigation"></div>
 
 </body>
 </html>

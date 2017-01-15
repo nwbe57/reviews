@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 public class Movie{
 	
+	public Movie(){}
+	
 	
 	
 	public static List<List<String>> getSearchResults(String title) throws IOException{
@@ -100,7 +102,85 @@ public class Movie{
 	}
 	
 	
+	
+	
+	
+	public static String getTrailer(String movieID) throws IOException{
 		
+		URL url = new URL("http://api.themoviedb.org/3/movie/" + movieID + "/videos?api_key=cc10b91ab6be4842679242b80c13bb31");
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	    con.setDoOutput(true);
+	    con.setRequestMethod("GET");
+	    con.setRequestProperty("Content-Type", "application/json");
+	   
+	    BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+
+	    String trailer  = br.readLine(); 
+	    
+        String beg = "US\",\"key\":\"";
+        String end = "\",\"name";
+        String x = Pattern.quote(beg) + "(.*?)" + Pattern.quote(end); //returns just the youtube key 
+                                                                        //for this trailer
+        Pattern pattern = Pattern.compile(x);
+        Matcher matcher = pattern.matcher(trailer);
+        
+        String trailerURL = "";
+        
+        while(matcher.find()){
+	        trailerURL = matcher.group(1);
+	    }
+        trailerURL = "https://www.youtube.com/embed/" + trailerURL;
+	
+		return trailerURL;
+		
+	}
+	
+	
+	
+	
+	
+	
+	public static String getContentRating(String movieID) throws IOException{
+		
+		URL url = new URL("https://api.themoviedb.org/3/movie/"  
+				+ movieID + "?api_key=cc10b91ab6be4842679242b80c13bb31&append_to_response=releases");
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	    con.setDoOutput(true);
+	    con.setRequestMethod("GET");
+	    con.setRequestProperty("Content-Type", "application/json");
+	   
+	    BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+
+	    String contentRating  = br.readLine(); 
+	    
+        String beg = "certification\":\"";
+        String end = "\",\"iso_3166_1\":\"US\"";
+        String x = Pattern.quote(beg) + "(.*?)" + Pattern.quote(end); //returns just the content rating(G,PG,PG13,R) 
+           
+        Pattern pattern = Pattern.compile(x);
+        Matcher matcher = pattern.matcher(contentRating);
+        
+        String rated = "";
+        
+        while(matcher.find()){
+	        rated = matcher.group(1);
+	    }
+        rated = new StringBuilder(rated).reverse().toString();
+        rated = rated.split("\"")[0];
+        rated = new StringBuilder(rated).reverse().toString();
+        
+        if(rated.equals("") || rated == null){
+        	rated = "Not Found";
+        }
+        
+        
+		return rated;
+	}
+		
+	
+	
+	
+	
 	
 	public static List<String> getMovieInfo(String movieID) throws IOException{
 		
@@ -280,10 +360,6 @@ public class Movie{
         
 		return castInfo;
 	}
-	
-	
-	//the url to get content rating PG, PG-13,R, etc. 
-	//https://api.themoviedb.org/3/movie/ + movieID + ?api_key=cc10b91ab6be4842679242b80c13bb31&append_to_response=releases
 	
 	
 }

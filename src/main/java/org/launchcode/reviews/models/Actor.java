@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 public class Actor {
 	
+	public Actor(){}
+	
 
 	public static List<String> getActorInfo(String actorID) throws IOException{
 		

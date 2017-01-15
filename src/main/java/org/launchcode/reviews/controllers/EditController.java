@@ -39,7 +39,7 @@ public class EditController extends AbstractController {
 		} else {
 			String error = "Only author can change review";
 			model.addAttribute("error", error);
-			return "template";
+			return "err";
 		}
 			
 	}

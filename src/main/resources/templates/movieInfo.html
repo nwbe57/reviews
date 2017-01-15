@@ -4,26 +4,34 @@
 </head>
 
 
-
-<body style="background: linear-gradient(to left, #FFFFFF 35%, #cc9900 65%);">
+<body style="background: linear-gradient(
+    to right, 
+    #b6701e 0%, 
+    #b6701e 36%, 
+    #ff9e2c 36%, 
+    #ff9e2c 100%
+  );">
 	 
 	<div th:replace="template :: navigation"></div>
 	
 	
 	<form method="post">
-	
-	
-	
-	    <div style="width:64%; float:right;">
-	    	<button style="font-size: 25px;" type="submit" value="see_all" name="button">See all Reviews for this Film</button>
-	    	<button style="font-size: 25px;" type="submit" value="write" name="button">Write a Review for this Film</button><br></br>
-	        <h1 th:value="${title}" th:text="${title}"></h1><br></br>
-	        AVERAGE RATING:
+		
+   		<div style="width:64%; float:right;"><br></br>
+   			<button style="font-size: 25px;" type="submit" value="see_all" name="button">See all Reviews for this Film</button>
+   			<button style="font-size: 25px;" type="submit" value="write" name="button">Write a Review for this Film</button><br></br>
+      		    <h1 th:value="${title}" th:text="${title}"></h1>
+      		   
+      		    <h3><a th:href="'/trailer/' + ${movieID}">LINK TO TRAILER</a></h3>
+      		    
+	        <h3>AVERAGE RATING:</h3>
 	        <p th:value="${avgRating}" th:text="${avgRating}"></p>
 	        <p th:value="${noAvg}" th:text="${noAvg}"></p>
-	        RELEASED
-	        <p th:value="${year}" th:text="${year}"></p><br></br>
-	        DIRECTOR(S)
+	        <h3>RELEASE DATE:</h3>
+	        <p th:value="${year}" th:text="${year}"></p>
+	        <h3>RATED:</h3>
+	        <p th:text="${rated}"></p>
+	        <h3>DIRECTOR(S):</h3>
 	        
 	        <table>
 	        	<tr th:each="dir : ${dirName}">
@@ -34,44 +42,45 @@
 	    		</tr>
 	    	</table>
 	    		<br></br>
-	    		<br></br>
-	        TAGLINE
-	        <p th:value="${tagline}" th:text="${tagline}"></p><br></br>
-	        OVERVIEW
-	        <p th:value="${overview}" th:text="${overview}"></p><br></br>
-	        CAST
-	    </div>
-	       
-	     <div>
-	        <img style="width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
-	     </div>  	
-	       	
-	    <div style="width:64%; float:right;">	
-	    <table style="display: inline-block;">
-	    
-		    <tr th:each="char : ${charArray}">
-		    	
-		    	<td height="25" th:text="${char}"></td>
-		    	<td style="display:inline;">played by</td>
-		    	   	
-		    </tr>
-		</table>
+	    		
+	        <h3>TAGLINE:</h3>
+	        <p th:value="${tagline}" th:text="${tagline}"></p>
+	        <h3>OVERVIEW:</h3>
+	        <p th:value="${overview}" th:text="${overview}"></p>
+	        <h3>CAST:</h3>
+   		</div>
+   		
+   		<div>
+        	<img style="display:inline-block; width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
+     	</div>  	
+   
+   		<div style="width:64%; float:right;">	
+		    <table style="display: inline-block;">
+		    
+			    <tr th:each="char : ${charArray}">
+			    	
+			    	<td height="25" th:text="${char}"></td>
+			    	<td style="display:inline;">played by</td>
+			    	   	
+			    </tr>
+			</table>
 		
-		<table style="display: inline-block;">
-	    
-		    <tr th:each="name : ${nameArray}">
-		    	    	
-		    	<td><button style="width:100%" type="submit" name="button" th:value="${nameArray.indexOf(name)}"
-		    	                                        th:text="${name}"></button></td>		    	
-		    </tr>
-		</table>
-	    </div>
-	
-	        <div class="error" th:text="${error}"></div>
+			<table style="display: inline-block;">
+		    
+			    <tr th:each="name : ${nameArray}">
+			    	    	
+			    	<td><button style="width:100%" type="submit" name="button" th:value="${nameArray.indexOf(name)}"
+			    	                                        th:text="${name}"></button></td>		    	
+			    </tr>
+			</table>
+   		</div>
+   
+	  
+	  <div class="error" th:text="${error}"></div>
 	    	
 	  
 	</form>
-
+	
 </body>
 
 

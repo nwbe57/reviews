@@ -44,7 +44,7 @@ public class ActorController extends AbstractController{
     	if(nameArray.size() == 0){
     		String error = "No result found, must type a valid name";
     		model.addAttribute("error", error);
-    		return "template";
+    		return "err";
     	}
     	
 		model.addAttribute("name", name);   //displays the user provided name to be
@@ -62,6 +62,9 @@ public class ActorController extends AbstractController{
 	    		
 	    		return "redirect:/person/" + actorID;
 	    	}
+	    	if(!picArray.get(i).contains("jpg")){
+        		picArray.set(i, "/images/b/noImage.jpg");
+        	}
     	}
     	
     	model.addAttribute("actorID", actorID);
@@ -70,7 +73,7 @@ public class ActorController extends AbstractController{
     } catch (IOException e) {
     	String error = "No result found, must type a valid name";
     	model.addAttribute("error", error);
-    	return "template";
+    	return "err";
     }
     		
 	return "person";
@@ -101,9 +104,9 @@ public class ActorController extends AbstractController{
 		if(hometown == null || hometown.equals("")  || hometown.equals("null") || hometown.equals("\"\"")){
 			hometown = "Not found";
 		}
-		if(picture == null || picture.equals("")  || picture.equals("null") || picture.equals("\"\"")){
-			picture = "Not found";
-		}
+		if(!picture.contains("jpg")){
+    		picture = "/images/b/noImage.jpg";
+    	}
 	
 		model.addAttribute("name", name);
 		model.addAttribute("year", year);
@@ -130,7 +133,7 @@ public class ActorController extends AbstractController{
 	} catch (IOException e) {
 		String error = "No result found for " + actorID;
     	model.addAttribute("error", error);
-    	return "template";
+    	return "err";
 	}
 		
 		return "actorInfo";

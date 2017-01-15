@@ -6,6 +6,13 @@
 
 	<div th:replace="template :: navigation"></div>
 	
+	<div id="wrapper3">
+	
+			<h3 style="text-align: center;">
+				Review#
+				<a th:text="${review.uid}"></a>
+			</h3>
+	
 		    <h2 style="text-align: center;" class="review-title">
 				<a th:href="'/movie/' + ${review.movieID}" 
 		           th:text="${review.title}"></a>
@@ -23,6 +30,8 @@
 	<p class="review-author">
    	 	written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by <a th:href="'/' + ${review.author.username}" th:text="${review.author.username}"></a>
 	</p>
+	</div>
+	
 	</div>
 
 </body>

@@ -30,7 +30,7 @@ public class ReviewController extends AbstractController {
 		if(user == null){
 			String error = "Must be logged in to write a review";
 			model.addAttribute("error", error);
-			return "template";
+			return "err";
 		}
 		
         String title = movieInfo.get(0);
@@ -111,7 +111,7 @@ public class ReviewController extends AbstractController {
 			String error = "There is no review with ID# " + uid + " for username " + username;
 			model.addAttribute("error", error);
 			
-			return "template";
+			return "err";
 		}
 		
 		User user = userDao.findByUsername(username);
@@ -169,7 +169,7 @@ public class ReviewController extends AbstractController {
 			String error = "Username " + username + " does not exist";
 			model.addAttribute("error", error);
 			
-			return "template";
+			return "err";
 			
 		} else {
 			
