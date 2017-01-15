@@ -78,6 +78,7 @@ public class MovieDbController extends AbstractController{
 		    		
 		    		return "redirect:/movie/" + movieID;
 		    	}
+		    	
 	    	}
 	    	
 		} catch (IndexOutOfBoundsException e) {

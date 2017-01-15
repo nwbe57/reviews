@@ -8,7 +8,7 @@
 	
 	<div id="wrapper3">
 	
-			<h3><a th:href="'/movie/' + ${movieID}">BACK TO MOVIE PAGE</a></h3>
+			<h3><a th:href="'/movie/' + ${movieID}" th:text="${title + ' Info Page'}"></a></h3>
 	
 			<h1><a th:text="${title}"></a>&nbsp;Trailer</h1>
 			

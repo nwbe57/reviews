@@ -34,7 +34,10 @@
 	    	<td height="235"><button style="width:100%" type="submit" name="button" 
 	    		
 	    		th:value="${idArray.indexOf(id)}"
-	    		th:text="${resultArray.get(idArray.indexOf(id))}"></button></td>	
+	    		th:text="${resultArray.get(idArray.indexOf(id))}"></button>
+	    		
+	    		<h3><a th:href="'/trailer/' + ${id}">LINK TO TRAILER</a></h3>
+	    	</td>	
 	    </tr>
 		</table>
 		
