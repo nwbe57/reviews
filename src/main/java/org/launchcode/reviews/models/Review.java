@@ -72,6 +72,16 @@ public class Review extends AbstractEntity{
 		this.body = body;
 	}
 	
+	public static String getFirstLine(Review review){
+		
+		String[] bodyLines = review.getBody().split(System.getProperty("line.separator"));
+		String firstLine = "";
+		
+		firstLine = bodyLines[0];
+	
+		return firstLine;
+	}
+	
 	public void setMovieID(String movieID) {
 		this.movieID = movieID;
 	}
@@ -115,8 +125,8 @@ public class Review extends AbstractEntity{
 		return author;
 	}
 	
-	@SuppressWarnings("unused")
-	private void setAuthor(User author) {
+	
+	public void setAuthor(User author) {
 		this.author = author;
 	}
 	

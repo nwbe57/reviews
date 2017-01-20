@@ -2,6 +2,7 @@ package org.launchcode.reviews.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -149,6 +150,7 @@ public class ReviewController extends AbstractController {
 	
 		String movieID = review.getMovieID();
 		List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
+		
 		Double avgRating = review.getAvgRating(movieID, reviewsByTitle);
 		model.addAttribute("avgRating", avgRating);
 			
@@ -174,20 +176,27 @@ public class ReviewController extends AbstractController {
 		} else {
 			
 			List<Review> reviews = user.getReviews();	
+			Collections.reverse(reviews);
 			String author = user.getUsername();
 			List<Double >ratings = new ArrayList<Double>();
+			List<String> firstLines = new ArrayList<String>();
 			
 			String movieID = "";
 			for(Review review: reviews){
 				movieID = review.getMovieID();
 			
-			model.addAttribute("movieID", movieID);
+				model.addAttribute("movieID", movieID);
+				
+				List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
+				Double avgRating = review.getAvgRating(movieID, reviewsByTitle);
+				ratings.add(avgRating);
+				
+				String x = Review.getFirstLine(review);
+				firstLines.add(x);
 			
-			List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
-			Double avgRating = review.getAvgRating(movieID, reviewsByTitle);
-			ratings.add(avgRating);
+			}
 			
-		}
+			model.addAttribute("firstLines", firstLines);
 			model.addAttribute("ratings", ratings);
 			model.addAttribute("reviews", reviews);
 			model.addAttribute("author", author);

@@ -7,6 +7,41 @@ input[type="text"], input[type="password"] {
     width: 200px;
 }
 
+#welcome{
+	font-size: 25px;
+	background-color:#c6c5ba;
+	text-align: center;
+}
+
+#actorBody{
+	background: linear-gradient(
+    to right, 
+    #ff471a 0%, 
+    #ff471a 36%, 
+    #f9e440 36%, 
+    #f9e440 100%
+    );
+}
+
+#movieBody{
+	background: linear-gradient(
+    to right, 
+    #b6701e 0%, 
+    #b6701e 36%, 
+    #ff9e2c 36%, 
+    #ff9e2c 100%
+    );
+}
+
+#infoLinks{
+	width:64%; 
+	float:right;
+}
+
+#infoLinks table{
+	display: inline-block;
+}
+
 textarea {
     width: 60%;
     height: 200px;
@@ -17,7 +52,7 @@ textarea {
 	margin-right:100px;
 	height: 100%;
 	overflow:auto;
-	background-color: #E3FCD6;
+	background-color: #a5efb1;
 	min-height: 100%;
 	text-align: center;
 	
@@ -29,7 +64,7 @@ textarea {
 	height: 100%;
 	overflow:auto;
 	padding-left: 10%;
-	background-color: #E3FCD6;
+	background-color: #a5efb1;
 	min-height: 100%
 }
 
@@ -37,7 +72,7 @@ textarea {
 	margin-left:100px;
 	margin-right:100px;
 	overflow:auto;
-	background-color: #E3FCD6;
+	background-color: #a5efb1;
 	
 }
 
@@ -46,6 +81,10 @@ nav{
 	margin-top: -0.6%;
 	background-color:#ffd966;
 	
+}
+
+#top-nav{
+	diplay: block;
 }
 
 #bottom-nav{
@@ -58,9 +97,9 @@ nav{
 	max-width: 100%; 
 	height: auto;
 	padding:none;
+	margin-top: -0.8%;
 }	
 
 tr.allReviews td{
 	border-bottom: 1pt solid black;	
-}		 
-
+} 

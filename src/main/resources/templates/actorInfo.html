@@ -5,15 +5,9 @@
 
 <div th:replace="template :: navigation"></div>
 
-<body style="background: linear-gradient(
-    to right, 
-    #F34F26 0%, 
-    #F34F26 36%, 
-    #FFF55F 36%, 
-    #FFF55F 100%
-  );">
+<body id="actorBody">
 
-	<form method="post" style="background-color:56d8d8;">
+	<form method="post">
 	
 		<div style="width:64%; float:right;">
 	    	
@@ -32,20 +26,18 @@
 	        <img style="width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
 	     </div>  
 	
-	    <div style="width:64%; float:right;">
-	    <table style="display: inline-block;">
+	    <div id="infoLinks">
+	    <table>
 	    
 		    <tr th:each="title : ${titles}">
 		    	
 		    	<td><button style="width:100%" type="submit" name="button" th:value="${titles.indexOf(title)}"
 		    	                                        th:text="${title}"></button></td>
-		    			
-		    <!-- 	<td th:text="${years.get(titles.indexOf(title))}"></td> -->
 		    	
 		    </tr>
 		</table>
 		
-		 <table style="display: inline-block;">
+		 <table>
 	    
 		    <tr th:each="year : ${years}">
 		    			
@@ -54,7 +46,7 @@
 		    </tr>
 		</table>
 		
-		<table style="display: inline-block;">  
+		<table>  
 		    <tr th:each="job : ${jobs}">
 		    	
 		    	<td height="25" th:text="${job}"></td>

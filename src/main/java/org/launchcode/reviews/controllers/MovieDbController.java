@@ -4,6 +4,7 @@ package org.launchcode.reviews.controllers;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -95,6 +96,58 @@ public class MovieDbController extends AbstractController{
     	return "movie";
     	
     }
+	
+	
+	@RequestMapping(value = "/nowPlaying", method = RequestMethod.GET)
+	public String searchNowPlaying(HttpServletRequest request, Model model) throws IOException {
+		
+		List<List<String>> nowPlaying = Movie.getNowPlaying();
+		
+		List<String> resultArray = nowPlaying.get(0);
+		List<String> idArray = nowPlaying.get(1);
+		List<String> yrArray = nowPlaying.get(2);
+		List<String> picArray = nowPlaying.get(3);
+		
+		model.addAttribute("resultArray", resultArray);   
+		model.addAttribute("idArray", idArray);
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+		
+		return "nowPlaying";
+	}
+	
+	@RequestMapping(value = "/nowPlaying", method = RequestMethod.POST)
+	public String postNowPlaying(HttpServletRequest request, Model model) throws IOException {
+		
+		String button = request.getParameter("button");
+		
+		List<List<String>> nowPlaying = Movie.getNowPlaying();
+		
+		List<String> resultArray = nowPlaying.get(0);
+		List<String> idArray = nowPlaying.get(1);
+		List<String> yrArray = nowPlaying.get(2);
+		List<String> picArray = nowPlaying.get(3);
+		
+		model.addAttribute("resultArray", resultArray);   
+		model.addAttribute("idArray", idArray);
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+    	
+    	for(int i = 0; i < idArray.size(); i++){
+    		
+	    	if(button.equals(String.valueOf(i))){
+	    		
+	    		String movieID = "";
+	    		movieID = idArray.get(i);
+	    		model.addAttribute("movieID", movieID);
+	    		
+	    		return "redirect:/movie/" + movieID;
+	    	}
+	    	
+    	}
+		
+		return "nowPlaying";
+	}
 	
 	@RequestMapping(value = "/movie/{movieID}", method = RequestMethod.GET)
 	public String movieIDGet(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
@@ -228,6 +281,8 @@ public class MovieDbController extends AbstractController{
 			List<Review> reviews = reviewDao.findByMovieID(movieID);
 			String error = "";
 			String author = movieInfo.get(0);
+			
+			Collections.reverse(reviews);
 			
 			if(reviews.isEmpty()){
 				error = "This film hasn't been reviewed";

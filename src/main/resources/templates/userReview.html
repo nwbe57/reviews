@@ -25,7 +25,7 @@
 	<div style="text-align: center;">
 	Rating
 	<p th:text="${review.rating}"></p>
-	<p class="review-body" th:text="${review.body}"></p>
+	<p style="word-wrap: break-word; white-space: pre-wrap; margin-left:10%; margin-right:10%;" th:text="${review.body}"></p>
 
 	<p class="review-author">
    	 	written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by <a th:href="'/' + ${review.author.username}" th:text="${review.author.username}"></a>

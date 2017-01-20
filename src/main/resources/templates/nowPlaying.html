@@ -9,20 +9,14 @@
 	<div id="wrapper2">
 
 	<form method="post">
-	    <h2>Search by Movie Title</h2>
-	    <label>
- 		
- 			<input type="text" name="preTitle" th:value="${preTitle}"></input>
-	        
-	        <button type="submit" name="button" value="search">Search</button>
-	    </label>
-	    
 	
+	     <h2>Now Playing in Theaters!</h2>
+	  
 	    
 	    <div class="error" th:text="${error}"></div>
 	    <br></br>
 	    
-	    <table style="display: inline-block;">
+	     <table style="display: inline-block;">
 		<tr th:each="pic : ${picArray}">
 			<td height="231"><img style="height:231px;" th:src="${pic}" alt="No Picture Found"></img></td>
 		</tr>

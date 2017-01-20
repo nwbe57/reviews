@@ -105,6 +105,96 @@ public class Movie{
 	
 	
 	
+	public static List<List<String>> getNowPlaying() throws IOException{
+		
+		List<List<String>> nowPlaying = new ArrayList<List<String>>();
+		
+		URL url = new URL("https://api.themoviedb.org/3/movie/now_playing?api_key=cc10b91ab6be4842679242b80c13bb31&language=en-US");
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	    con.setDoOutput(true);
+	    con.setRequestMethod("GET");
+	    con.setRequestProperty("Content-Type", "application/json");
+	
+	    BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+	
+	    String initResults  = br.readLine(); 
+	    
+	    String beg = "\"title\":";
+	    String end = ",\"backdrop_path\":";
+	    String x = Pattern.quote(beg) + "(.*?)" + Pattern.quote(end); //returns just the titles in quotes
+	                                                                  //from the raw results
+	    String begYR = "\"release_date\":\"";
+	    String endYR = "\",\"genre_ids\":";                            //returns just the release years 
+	    String xYR = Pattern.quote(begYR) + "(.*?)" + Pattern.quote(endYR);    //in quotes from the raw results
+	    
+	    String begID = "\"id\":";
+	    String endID = ",\"original_title\":";
+	    String xx = Pattern.quote(begID) + "(.*?)" + Pattern.quote(endID); //returns just the ID#s 
+	                                                                  //from the raw results
+	    String begPic = "{\"poster_path\":";
+	    String endPic = ",\"adult\":";
+	    String xPic = Pattern.quote(begPic) + "(.*?)" + Pattern.quote(endPic); //returns the picture
+	    
+	    Pattern patternTitle = Pattern.compile(x);
+	    Pattern patternID = Pattern.compile(xx);
+	    Pattern patternYR = Pattern.compile(xYR);
+	    Pattern patternPic = Pattern.compile(xPic);
+	    
+	    Matcher matcher = patternTitle.matcher(initResults);
+	    Matcher matcherID = patternID.matcher(initResults);
+	    Matcher matcherYR = patternYR.matcher(initResults);
+	    Matcher matcherPic = patternPic.matcher(initResults);
+	    
+	    List<String> resultArray = new ArrayList<String>(); 
+	    List<String> idArray = new ArrayList<String>(); 
+	    List<String> yrArray = new ArrayList<String>();  //the arrays of movie titles, years,
+	    List<String> picArray = new ArrayList<String>();    //the corresponding movie ID#s have  
+	                                                            //matching indexes. 
+	    while (matcher.find()) {                                 
+	    	String titlesFound = matcher.group(1);
+	    	resultArray.add(titlesFound);	
+	    }
+	    while(matcherID.find()){
+	    	String IDsFound = matcherID.group(1);
+	    	idArray.add(IDsFound);
+	    }
+	    while(matcherYR.find()){
+	    	String yrsFound = matcherYR.group(1);
+	    	yrArray.add(yrsFound);
+	    }
+	    while(matcherPic.find()){
+	    	String picsFound = matcherPic.group(1);
+	    	picArray.add(picsFound);
+	    }
+	    
+	    for(int i = 0; i < picArray.size(); i++){
+			if(!picArray.get(i).contains(".jpg")){
+				String noPic = "No Pic Found";
+				picArray.set(i, noPic);
+			} else {
+				String p1 = picArray.get(i).replace("\"", "");
+				String p2 = p1.replace("\\", "");
+				String p3 = p2.replace("/", "");
+				String picUrl = "http://image.tmdb.org/t/p/w154//" + p3;
+				picArray.set(i, picUrl);
+			}
+	    }
+    
+	    nowPlaying.add(resultArray);
+	    nowPlaying.add(idArray);
+	    nowPlaying.add(yrArray);
+	    nowPlaying.add(picArray);
+	    
+	    return nowPlaying;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	public static String getTrailer(String movieID) throws IOException{
 		
 		URL url = new URL("http://api.themoviedb.org/3/movie/" + movieID + "/videos?api_key=cc10b91ab6be4842679242b80c13bb31");
@@ -155,7 +245,7 @@ public class Movie{
 	    
         String beg = "certification\":\"";
         String end = "\",\"iso_3166_1\":\"US\"";
-        String x = Pattern.quote(beg) + "(.*?)" + Pattern.quote(end); //returns just the content rating(G,PG,PG13,R) 
+        String x = Pattern.quote(beg) + "(.*?)" + Pattern.quote(end); //returns just the content rating(G,PG,PG13,R,NR,UR) 
            
         Pattern pattern = Pattern.compile(x);
         Matcher matcher = pattern.matcher(contentRating);

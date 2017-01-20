@@ -4,13 +4,7 @@
 </head>
 
 
-<body style="background: linear-gradient(
-    to right, 
-    #b6701e 0%, 
-    #b6701e 36%, 
-    #ff9e2c 36%, 
-    #ff9e2c 100%
-  );">
+<body id="movieBody">
 	 
 	<div th:replace="template :: navigation"></div>
 	
@@ -22,7 +16,7 @@
    			<button style="font-size: 25px;" type="submit" value="write" name="button">Write a Review for this Film</button><br></br>
       		    <h1 th:value="${title}" th:text="${title}"></h1>
       		   
-      		    <h3><a th:href="'/trailer/' + ${movieID}">LINK TO TRAILER</a></h3>
+      		    <h3><a th:href="'/trailer/' + ${movieID}">WATCH TRAILER</a></h3>
       		    
 	        <h3>AVERAGE RATING:</h3>
 	        <p th:value="${avgRating}" th:text="${avgRating}"></p>
@@ -54,8 +48,8 @@
         	<img style="display:inline-block; width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
      	</div>  	
    
-   		<div style="width:64%; float:right;">	
-		    <table style="display: inline-block;">
+   		<div id="infoLinks">	
+		    <table>
 		    
 			    <tr th:each="char : ${charArray}">
 			    	
@@ -65,7 +59,7 @@
 			    </tr>
 			</table>
 		
-			<table style="display: inline-block;">
+			<table>
 		    
 			    <tr th:each="name : ${nameArray}">
 			    	    	

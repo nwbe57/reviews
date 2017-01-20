@@ -28,6 +28,8 @@ public class HomeController extends AbstractController {
 		
 		List<Double >ratings = new ArrayList<Double>();
 		
+		List<String> firstLines = new ArrayList<String>();
+		
 		String movieID = "";
 		for(Review review: reviews){
 			movieID = review.getMovieID();
@@ -37,8 +39,13 @@ public class HomeController extends AbstractController {
 			List<Review> reviewsByTitle = reviewDao.findByMovieID(movieID);
 			Double avgRating = review.getAvgRating(movieID, reviewsByTitle);
 			ratings.add(avgRating);
+			
+			String x = Review.getFirstLine(review);
+			firstLines.add(x);
 		
-	}
+		}
+		
+		model.addAttribute("firstLines", firstLines);
 		model.addAttribute("ratings", ratings);
 		model.addAttribute("reviews", reviews);
 			

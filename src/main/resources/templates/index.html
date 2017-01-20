@@ -7,7 +7,14 @@
 <div th:replace="template :: top-nav"></div>
 
 <div id="wrapper">
-<h1 style="text-align: center;"><a th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
+
+			<div id="welcome">
+				<a>Welcome to "Is It Worth Seeing?".
+				   Search current movies or your favorites from the past.<br></br>
+				   Read other people's reviews/ratings or create your own.</a>
+			</div>		
+	
+<h1 style="text-align: center;"><a th:text="${author}"></a>&nbsp;Recent Reviews</h1>
 
 
 <table style="width: 100%; text-align: center;">
@@ -26,7 +33,10 @@
 		
 			<a th:text="${review.rating}"></a>&nbsp;RATING<br></br><br></br>
 			
-			<a th:text="${review.body}"></a>
+			
+			<p style="word-wrap: break-word; white-space: pre-wrap; margin-left:10%; margin-right:10%;" 
+			             th:text="${firstLines.get(reviews.indexOf(review)) + '.....'}"></p>
+			
 			
 		    <p>Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"
 		       th:text="${review.uid}"></a>

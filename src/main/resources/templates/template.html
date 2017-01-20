@@ -4,13 +4,15 @@
 
 	<link th:href="@{/css/a/styles.css}" type="text/css" rel="stylesheet"></link>
 	
+	<link rel="icon" type="image/jpg" th:href="@{/images/b/favicon.jpg}" />
+	
 	<style type="text/css" th:inline="text">
   		body {
     		background-image: url([[@{/images/b/audience.jpg}]]);	
   		}
 	</style>
 	
-	<title>Reviews</title>
+	<title>Is It Worth Seeing?</title>
 </head>
 
 
@@ -18,26 +20,25 @@
 	<div th:fragment="top-nav">
 		<table class="banner">
 			  <tr>
-				<td><img style="width:100%;" th:src="@{/images/b/film-reel.jpg}" alt="film-reel"></img></td>
-				<td><img style="width:100%;" th:src="@{/images/b/film-reel.jpg}" alt="film-reel"></img></td>
-				<td><img style="width:100%;" th:src="@{/images/b/film-reel.jpg}" alt="film-reel"></img></td>
+				<td><img style="width: auto;" th:src="@{/images/b/sign.jpg}" alt="Is It Worth Seeing? Ratings and Reviews"></img></td>
 			  </tr>
 		</table>
 		
 		<nav th:fragment="navigation"> 
-
 	
 	    	<div style="float:left; width:24%; display:inline-block;">
 				<a href="/">&nbsp;Home</a>
 			</div>
 			
 			<div style="text-align: center; width:52%; display:inline-block;">
-		        <a href="/movie">Search by Movie&nbsp;&nbsp;</a>
-		        <a href="/person">Search by Person</a>
+				<a>Search By: </a>
+		        <a href="/movie">Movie</a>&nbsp;&nbsp;
+		        <a href="/person">Person</a>&nbsp;&nbsp;
+		        <a href="/nowPlaying">Now Playing</a>
 		    </div>
        
         	<div style="float:right; text-align: right; width:24%; display:inline-block;">
-		        <a href="/login">Login&nbsp;&nbsp;</a>
+		        <a href="/login">Login</a>&nbsp;&nbsp;
 			    <a href="/logout">Logout&nbsp;</a>
 			</div>
     
