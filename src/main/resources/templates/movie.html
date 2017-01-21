@@ -17,7 +17,10 @@
 	        <button type="submit" name="button" value="search">Search</button>
 	    </label>
 	    
-	
+		Results:&nbsp;
+	     <div style="display: inline;" th:each="page: ${pageNum}">
+	     	<a th:href="'/SearchMovie/' + ${page}" th:text="${page}"></a>
+	  	 </div>
 	    
 	    <div class="error" th:text="${error}"></div>
 	    <br></br>
@@ -46,6 +49,12 @@
 			<td height="235" th:text="${year}"></td>
 		</tr>
 		</table>
+		
+		 <br></br>
+	     <div style="display: inline;" th:each="page: ${pageNum}">
+	     	<a th:href="'/SearchMovie/' + ${page}" th:text="${page}"></a>
+	  	 </div>
+	     <br></br><br></br>
 	    
 	</form>
 	

@@ -18,11 +18,12 @@ public class Movie{
 	
 	
 	
-	public static List<List<String>> getSearchResults(String title) throws IOException{
+	public static List<List<String>> getSearchResults(String title, int page) throws IOException{
 		
 		List<List<String>> searchResults = new ArrayList<List<String>>();
 	
-		URL url = new URL("https://api.themoviedb.org/3/search/movie?api_key=cc10b91ab6be4842679242b80c13bb31&query=" + title);
+		//URL url = new URL("https://api.themoviedb.org/3/search/movie?api_key=cc10b91ab6be4842679242b80c13bb31&query=" + title);
+		URL url = new URL("https://api.themoviedb.org/3/search/movie?api_key=cc10b91ab6be4842679242b80c13bb31&language=en-US&query=" + title + "&page=" + page + "&include_adult=false");
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	    con.setDoOutput(true);
 	    con.setRequestMethod("GET");
@@ -48,21 +49,28 @@ public class Movie{
 	    String endPic = ",\"adult\":";
 	    String xPic = Pattern.quote(begPic) + "(.*?)" + Pattern.quote(endPic); //returns the picture
 	    
+	    String begTotal = "\"total_pages\":";
+	    String endTotal = "}";
+	    String xTotal = Pattern.quote(begTotal) + "(.*?)" + Pattern.quote(endTotal); //returns the total # results
+	    
 	    Pattern patternTitle = Pattern.compile(x);
 	    Pattern patternID = Pattern.compile(xx);
 	    Pattern patternYR = Pattern.compile(xYR);
 	    Pattern patternPic = Pattern.compile(xPic);
+	    Pattern patternTotal = Pattern.compile(xTotal);
 	    
 	    Matcher matcher = patternTitle.matcher(initResults);
 	    Matcher matcherID = patternID.matcher(initResults);
 	    Matcher matcherYR = patternYR.matcher(initResults);
 	    Matcher matcherPic = patternPic.matcher(initResults);
+	    Matcher matcherTotal = patternTotal.matcher(initResults);
 	    
 	    List<String> resultArray = new ArrayList<String>(); 
 	    List<String> idArray = new ArrayList<String>(); 
 	    List<String> yrArray = new ArrayList<String>();  //the arrays of movie titles, years,
 	    List<String> picArray = new ArrayList<String>();    //the corresponding movie ID#s have  
-	                                                            //matching indexes. 
+	    List<String> totalNum = new ArrayList<String>();         //matching indexes. 
+	   
 	    while (matcher.find()) {                                 
 	    	String titlesFound = matcher.group(1);
 	    	resultArray.add(titlesFound);	
@@ -78,6 +86,10 @@ public class Movie{
 	    while(matcherPic.find()){
 	    	String picsFound = matcherPic.group(1);
 	    	picArray.add(picsFound);
+	    }
+	    while(matcherTotal.find()){
+	    	String totalFound = matcherTotal.group(1);
+	    	totalNum.add(totalFound);
 	    }
 	    
 	    for(int i = 0; i < picArray.size(); i++){
@@ -97,6 +109,7 @@ public class Movie{
 	    searchResults.add(idArray);
 	    searchResults.add(yrArray);
 	    searchResults.add(picArray);
+	    searchResults.add(totalNum);
 	    
 	    return searchResults;
 	}
@@ -105,11 +118,11 @@ public class Movie{
 	
 	
 	
-	public static List<List<String>> getNowPlaying() throws IOException{
+	public static List<List<String>> getNowPlaying(int page) throws IOException{
 		
 		List<List<String>> nowPlaying = new ArrayList<List<String>>();
 		
-		URL url = new URL("https://api.themoviedb.org/3/movie/now_playing?api_key=cc10b91ab6be4842679242b80c13bb31&language=en-US");
+		URL url = new URL("https://api.themoviedb.org/3/movie/now_playing?api_key=cc10b91ab6be4842679242b80c13bb31&language=en-US&page=" + page);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	    con.setDoOutput(true);
 	    con.setRequestMethod("GET");
@@ -135,21 +148,28 @@ public class Movie{
 	    String endPic = ",\"adult\":";
 	    String xPic = Pattern.quote(begPic) + "(.*?)" + Pattern.quote(endPic); //returns the picture
 	    
+	    String begTotal = "\"total_pages\":";
+	    String endTotal = ",";
+	    String xTotal = Pattern.quote(begTotal) + "(.*?)" + Pattern.quote(endTotal); //returns the total # results
+	    
 	    Pattern patternTitle = Pattern.compile(x);
 	    Pattern patternID = Pattern.compile(xx);
 	    Pattern patternYR = Pattern.compile(xYR);
 	    Pattern patternPic = Pattern.compile(xPic);
+	    Pattern patternTotal = Pattern.compile(xTotal);
 	    
 	    Matcher matcher = patternTitle.matcher(initResults);
 	    Matcher matcherID = patternID.matcher(initResults);
 	    Matcher matcherYR = patternYR.matcher(initResults);
 	    Matcher matcherPic = patternPic.matcher(initResults);
+	    Matcher matcherTotal = patternTotal.matcher(initResults);
 	    
 	    List<String> resultArray = new ArrayList<String>(); 
 	    List<String> idArray = new ArrayList<String>(); 
 	    List<String> yrArray = new ArrayList<String>();  //the arrays of movie titles, years,
-	    List<String> picArray = new ArrayList<String>();    //the corresponding movie ID#s have  
-	                                                            //matching indexes. 
+	    List<String> picArray = new ArrayList<String>();    //the corresponding movie ID#s have                                       
+	    List<String> totalNum = new ArrayList<String>();           //matching indexes.
+	    
 	    while (matcher.find()) {                                 
 	    	String titlesFound = matcher.group(1);
 	    	resultArray.add(titlesFound);	
@@ -165,6 +185,10 @@ public class Movie{
 	    while(matcherPic.find()){
 	    	String picsFound = matcherPic.group(1);
 	    	picArray.add(picsFound);
+	    }
+	    while(matcherTotal.find()){
+	    	String totalFound = matcherTotal.group(1);
+	    	totalNum.add(totalFound);
 	    }
 	    
 	    for(int i = 0; i < picArray.size(); i++){
@@ -184,6 +208,7 @@ public class Movie{
 	    nowPlaying.add(idArray);
 	    nowPlaying.add(yrArray);
 	    nowPlaying.add(picArray);
+	    nowPlaying.add(totalNum);
 	    
 	    return nowPlaying;
 		
@@ -218,9 +243,13 @@ public class Movie{
         
         while(matcher.find()){
 	        trailerURL = matcher.group(1);
+	        trailerURL = "https://www.youtube.com/embed/" + trailerURL;
 	    }
-        trailerURL = "https://www.youtube.com/embed/" + trailerURL;
-	
+        
+        if(trailerURL.isEmpty()){
+        	trailerURL = "https://www.youtube.com/embed/DH3ItsuvtQg"; //video with not found message
+        }
+        
 		return trailerURL;
 		
 	}

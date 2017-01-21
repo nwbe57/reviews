@@ -4,6 +4,7 @@ package org.launchcode.reviews.controllers;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,22 +22,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MovieDbController extends AbstractController{
 	
+	List<List<String>> nowPlaying = new ArrayList<>();
+	List<List<String>> titleResults = new ArrayList<>();
+	String title = "";
 	
-	@RequestMapping(value = "/movie", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/SearchMovie", method = RequestMethod.GET)
 	public String searchByTitle() {
 		return "movie";
 	}
 	
-	@RequestMapping(value = "/movie", method = RequestMethod.POST)
+	@RequestMapping(value = "/SearchMovie", method = RequestMethod.POST)
 	public String searchByTitle(HttpServletRequest request, Model model) throws IOException {
 		
 	try {
 		
 		String preTitle = request.getParameter("preTitle"); //the text the user inputs into the search field
 		
-		String title = preTitle.trim().replace(' ', '+'); //preTitle altered to fit into url.....
+		title = preTitle.trim().replace(' ', '+'); //preTitle altered to fit into url.....
 		                                                  // ex. "star wars" changed to "star+wars"
-		List<List<String>> titleResults = Movie.getSearchResults(title);
+		titleResults = Movie.getSearchResults(title,1);
 		
 		String button = request.getParameter("button");
 		
@@ -44,6 +49,7 @@ public class MovieDbController extends AbstractController{
 		List<String> idArray = titleResults.get(1);
 		List<String> yrArray = titleResults.get(2);
 		List<String> picArray = titleResults.get(3);
+		List<String> totalNum = titleResults.get(4);
 		
     	if(resultArray.size() == 0){
     		String error = "No result found, must type valid title";
@@ -60,7 +66,16 @@ public class MovieDbController extends AbstractController{
         		picArray.set(i, "/images/b/noImage.jpg");
         	}
     	}
-    
+    	
+    	Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+		
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
+		
+		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("preTitle", preTitle);   //displays the user provided title to be
     	model.addAttribute("resultArray", resultArray);  //searched, and provides the results from 
     	model.addAttribute("idArray", idArray);              //the tMDB database.
@@ -77,7 +92,7 @@ public class MovieDbController extends AbstractController{
 		    		movieID = idArray.get(i);
 		    		model.addAttribute("movieID", movieID);
 		    		
-		    		return "redirect:/movie/" + movieID;
+		    		return "redirect:/Movie/" + movieID;
 		    	}
 		    	
 	    	}
@@ -98,40 +113,241 @@ public class MovieDbController extends AbstractController{
     }
 	
 	
-	@RequestMapping(value = "/nowPlaying", method = RequestMethod.GET)
-	public String searchNowPlaying(HttpServletRequest request, Model model) throws IOException {
+	@RequestMapping(value = "/SearchMovie/{page}", method = RequestMethod.GET)
+	public String getByPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
 		
-		List<List<String>> nowPlaying = Movie.getNowPlaying();
+		titleResults = Movie.getSearchResults(title,page);
+		
+		List<String> resultArray = titleResults.get(0);
+		List<String> idArray = titleResults.get(1);
+		List<String> yrArray = titleResults.get(2);
+		List<String> picArray = titleResults.get(3);
+		List<String> totalNum = titleResults.get(4);
+		
+		for(int i = 0; i < yrArray.size(); i++){
+    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
+    			String noYr = "Yr Not Found";
+    			yrArray.set(i, noYr);
+    		}
+    		if(!picArray.get(i).contains("jpg")){
+        		picArray.set(i, "/images/b/noImage.jpg");
+        	}
+    	}
+		
+		Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+		
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("resultArray", resultArray);  
+    	model.addAttribute("idArray", idArray);             
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+		
+		return "movie";
+	}
+	
+	@RequestMapping(value = "/SearchMovie/{page}", method = RequestMethod.POST)
+	public String postByPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
+		
+		String button = request.getParameter("button"); 
+		
+		List<String> resultArray = titleResults.get(0);
+		List<String> idArray = titleResults.get(1);
+		List<String> yrArray = titleResults.get(2);
+		List<String> picArray = titleResults.get(3);
+		List<String> totalNum = titleResults.get(4);
+		
+		for(int i = 0; i < picArray.size(); i++){
+			if(!picArray.get(i).contains("jpg")){
+	    		picArray.set(i, "/images/b/noImage.jpg");
+	    	}
+		}
+			
+		Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+			
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
+		
+		model.addAttribute("resultArray", resultArray);   
+    	model.addAttribute("idArray", idArray);
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+    	model.addAttribute("pageNum", pageNum);
+		
+    	for(int i = 0; i < idArray.size(); i++){
+    		
+	    	if(button.equals(String.valueOf(i))){
+	    
+	    		String movieID = "";
+	    		movieID = idArray.get(i);
+	    		model.addAttribute("movieID", movieID);
+	    		
+	    		return "redirect:/Movie/" + movieID;
+	    	}
+	    	
+    	}
+		
+		return "movie";
+	}
+	
+	
+	@RequestMapping(value = "/NowPlaying", method = RequestMethod.GET)
+	public String getNowPlaying(HttpServletRequest request, Model model) throws IOException {
+		
+		nowPlaying = Movie.getNowPlaying(1);  
 		
 		List<String> resultArray = nowPlaying.get(0);
 		List<String> idArray = nowPlaying.get(1);
 		List<String> yrArray = nowPlaying.get(2);
 		List<String> picArray = nowPlaying.get(3);
+		List<String> totalNum = nowPlaying.get(4);
 		
+		for(int i = 0; i < picArray.size(); i++){
+			if(!picArray.get(i).contains("jpg")){
+	    		picArray.set(i, "/images/b/noImage.jpg");
+	    	}
+		}
+		
+		Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+			
 		model.addAttribute("resultArray", resultArray);   
 		model.addAttribute("idArray", idArray);
     	model.addAttribute("yrArray", yrArray);
     	model.addAttribute("picArray", picArray);
+    	model.addAttribute("totalNum", totalNum);
+    	
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
+		
+		model.addAttribute("pageNum", pageNum);
 		
 		return "nowPlaying";
 	}
 	
-	@RequestMapping(value = "/nowPlaying", method = RequestMethod.POST)
+	@RequestMapping(value = "/NowPlaying", method = RequestMethod.POST)
 	public String postNowPlaying(HttpServletRequest request, Model model) throws IOException {
+		
+		String button = request.getParameter("button"); 
+		
+		List<String> resultArray = nowPlaying.get(0);
+		List<String> idArray = nowPlaying.get(1);
+		List<String> yrArray = nowPlaying.get(2);
+		List<String> picArray = nowPlaying.get(3);
+		List<String> totalNum = nowPlaying.get(4);
+		
+		for(int i = 0; i < picArray.size(); i++){
+			if(!picArray.get(i).contains("jpg")){
+	    		picArray.set(i, "/images/b/noImage.jpg");
+	    	}
+		}
+			
+		Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+			
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
+		
+		model.addAttribute("resultArray", resultArray);   
+    	model.addAttribute("idArray", idArray);
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+    	model.addAttribute("totalNum", totalNum);
+    	model.addAttribute("pageNum", pageNum);
+		
+    	for(int i = 0; i < idArray.size(); i++){
+    		
+	    	if(button.equals(String.valueOf(i))){
+	    
+	    		String movieID = "";
+	    		movieID = idArray.get(i);
+	    		model.addAttribute("movieID", movieID);
+	    		
+	    		return "redirect:/Movie/" + movieID;
+	    	}
+	    	
+    	}
+    	
+		return "nowPlaying";
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/NowPlaying/{page}", method = RequestMethod.GET)
+	public String getNowPlayingPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
+		
+		nowPlaying = Movie.getNowPlaying(page);  
+		
+		List<String> resultArray = nowPlaying.get(0);
+		List<String> idArray = nowPlaying.get(1);
+		List<String> yrArray = nowPlaying.get(2);
+		List<String> picArray = nowPlaying.get(3);
+		List<String> totalNum = nowPlaying.get(4);
+			
+		for(int i = 0; i < picArray.size(); i++){
+			if(!picArray.get(i).contains("jpg")){
+	    		picArray.set(i, "/images/b/noImage.jpg");
+	    	}
+		}
+		
+		Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+			
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
+		
+		model.addAttribute("resultArray", resultArray);   
+		model.addAttribute("idArray", idArray);
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+    	model.addAttribute("totalNum", totalNum);
+    	model.addAttribute("pageNum", pageNum);
+		
+		return "nowPlaying";
+	}
+	
+	@RequestMapping(value = "/NowPlaying/{page}", method = RequestMethod.POST)
+	public String postNowPlayingPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
 		
 		String button = request.getParameter("button");
 		
-		List<List<String>> nowPlaying = Movie.getNowPlaying();
+		List<String> totalNum = nowPlaying.get(4);
+		
+		Integer pages = Integer.parseInt(totalNum.get(0));
+		
+		List<String> pageNum = new ArrayList<>();
+			
+		for(int i = 1; i <= pages; i++){
+			pageNum.add(String.valueOf(i));
+		}
 		
 		List<String> resultArray = nowPlaying.get(0);
 		List<String> idArray = nowPlaying.get(1);
 		List<String> yrArray = nowPlaying.get(2);
 		List<String> picArray = nowPlaying.get(3);
 		
-		model.addAttribute("resultArray", resultArray);   
+		for(int i = 0; i < picArray.size(); i++){
+			if(!picArray.get(i).contains("jpg")){
+	    		picArray.set(i, "/images/b/noImage.jpg");
+	    	}
+		}
+		
 		model.addAttribute("idArray", idArray);
-    	model.addAttribute("yrArray", yrArray);
-    	model.addAttribute("picArray", picArray);
     	
     	for(int i = 0; i < idArray.size(); i++){
     		
@@ -141,15 +357,22 @@ public class MovieDbController extends AbstractController{
 	    		movieID = idArray.get(i);
 	    		model.addAttribute("movieID", movieID);
 	    		
-	    		return "redirect:/movie/" + movieID;
+	    		return "redirect:/Movie/" + movieID;
 	    	}
 	    	
     	}
+    	
+    	model.addAttribute("resultArray", resultArray);   
+		model.addAttribute("idArray", idArray);
+    	model.addAttribute("yrArray", yrArray);
+    	model.addAttribute("picArray", picArray);
+    	model.addAttribute("pageNum", pageNum);
+    	model.addAttribute("totalNum", totalNum);
 		
 		return "nowPlaying";
 	}
 	
-	@RequestMapping(value = "/movie/{movieID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/Movie/{movieID}", method = RequestMethod.GET)
 	public String movieIDGet(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -243,7 +466,7 @@ public class MovieDbController extends AbstractController{
 	}
 	
 
-	@RequestMapping(value = "/movie/{movieID}", method = RequestMethod.POST)
+	@RequestMapping(value = "/Movie/{movieID}", method = RequestMethod.POST)
 	public String movieID(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
 		List<List<String>> castInfo = Movie.getCast(movieID);
@@ -261,7 +484,7 @@ public class MovieDbController extends AbstractController{
 	    		actorID = idArray.get(i);
 	    		model.addAttribute("actorID", actorID);
 	    		
-	    		return "redirect:/person/" + actorID ;
+	    		return "redirect:/SearchPerson/" + actorID ;
 	    	}
     	}	
 		List<String> directorName = castInfo.get(3);
@@ -272,7 +495,7 @@ public class MovieDbController extends AbstractController{
 		for(int i = 0; i < directorName.size(); i++){
 			if(button.equals(directorName.get(i))){
 				dirID = directorID.get(i);
-				return"redirect:/person/" + dirID ;
+				return"redirect:/SearchPerson/" + dirID ;
 			}
 		}
 		
@@ -316,9 +539,16 @@ public class MovieDbController extends AbstractController{
 		List<String> titleArray = Movie.getMovieInfo(movieID);
 		String title = titleArray.get(0);
 		
+		String noTrailer = "";
+		
+		if(trailer.equals("https://www.youtube.com/embed/DH3ItsuvtQg")){
+			noTrailer = " Not Found";
+		}
+		
 		model.addAttribute("movieID", movieID);
 		model.addAttribute("title", title);
 		model.addAttribute("trailer", trailer);
+		model.addAttribute("noTrailer", noTrailer);
 		
 		return "trailer";
 	}

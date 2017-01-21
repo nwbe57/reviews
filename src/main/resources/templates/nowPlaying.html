@@ -11,7 +11,11 @@
 	<form method="post">
 	
 	     <h2>Now Playing in Theaters!</h2>
-	  
+	     
+	     Page:&nbsp;
+	     <div style="display: inline;" th:each="page: ${pageNum}">
+	     	<a th:href="'/NowPlaying/' + ${page}" th:text="${page}"></a>
+	  	 </div>
 	    
 	    <div class="error" th:text="${error}"></div>
 	    <br></br>
@@ -40,6 +44,13 @@
 			<td height="235" th:text="${year}"></td>
 		</tr>
 		</table>
+		
+		 <br></br>
+		 Page:&nbsp;
+	     <div style="display: inline;" th:each="page: ${pageNum}">
+	     	<a th:href="'/NowPlaying/' + ${page}" th:text="${page}"></a>
+	  	 </div>
+	  	 <br></br><br></br>
 	    
 	</form>
 	

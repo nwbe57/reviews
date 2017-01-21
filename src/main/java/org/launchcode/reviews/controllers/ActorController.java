@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ActorController extends AbstractController{
 		
-	@RequestMapping(value = "/person", method = RequestMethod.GET)
+	@RequestMapping(value = "/SearchPerson", method = RequestMethod.GET)
 	public String searchByPerson() {	
 		return "person";
 	}
 	
-	@RequestMapping(value = "/person", method = RequestMethod.POST)
+	@RequestMapping(value = "/SearchPerson", method = RequestMethod.POST)
 	public String searchPerson(HttpServletRequest request, Model model) throws IOException {
 		
 	try {
@@ -60,7 +60,7 @@ public class ActorController extends AbstractController{
     		
 	    	if(button.equals(String.valueOf(i))){
 	    		
-	    		return "redirect:/person/" + actorID;
+	    		return "redirect:/SearchPerson/" + actorID;
 	    	}
 	    	if(!picArray.get(i).contains("jpg")){
         		picArray.set(i, "/images/b/noImage.jpg");
@@ -81,7 +81,7 @@ public class ActorController extends AbstractController{
 	}
 	
 	
-	@RequestMapping(value = "/person/{actorID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/SearchPerson/{actorID}", method = RequestMethod.GET)
 	public String getActorInfo(HttpServletRequest request, @PathVariable String actorID, Model model) throws IOException {
 		
 		//code below returns actorInfo - name, birthdate, hometown, bio, picture
@@ -140,7 +140,7 @@ public class ActorController extends AbstractController{
 		
 	}
 	
-	@RequestMapping(value = "/person/{actorID}", method = RequestMethod.POST)
+	@RequestMapping(value = "/SearchPerson/{actorID}", method = RequestMethod.POST)
 	public String getFilmByActor(HttpServletRequest request,  @PathVariable String actorID, Model model) throws IOException {
 		
 		List<List<String>> castInfo = Actor.getFilmography(actorID);
@@ -159,7 +159,7 @@ public class ActorController extends AbstractController{
 	    	}
     	}	
 		
-		return "redirect:/movie/" + movieID;
+		return "redirect:/Movie/" + movieID;
 		
 	}
 }
