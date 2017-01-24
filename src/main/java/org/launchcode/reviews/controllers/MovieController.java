@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-public class MovieDbController extends AbstractController{
+public class MovieController extends AbstractController{
 	
 	List<List<String>> nowPlaying = new ArrayList<>(); //declared these 2 arrays above the methods to be able
 	List<List<String>> titleResults = new ArrayList<>(); //to pass the same arrays from GET to POST of the

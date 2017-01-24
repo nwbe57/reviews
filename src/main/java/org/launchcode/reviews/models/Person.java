@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
 
 
 
-public class Actor {
+public class Person {
 	
-	public Actor(){}
+	public Person(){}
 	
 
-	public static List<String> getActorInfo(String actorID) throws IOException{
+	public static List<String> getPersonInfo(String actorID) throws IOException{
 		
 		//returns the personal info for each member of the cast listed
 		
@@ -106,7 +106,7 @@ public class Actor {
 	
 	
 	
-	public static List<List<String>> getActorID (String preName) throws IOException{
+	public static List<List<String>> getPersonID (String preName) throws IOException{
 		
 		List<List<String>> resultArray = new ArrayList<List<String>>();
 		

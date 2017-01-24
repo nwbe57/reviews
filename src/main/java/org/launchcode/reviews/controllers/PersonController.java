@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.launchcode.reviews.models.Actor;
+import org.launchcode.reviews.models.Person;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-public class ActorController extends AbstractController{
+public class PersonController extends AbstractController{
 		
 	@RequestMapping(value = "/SearchPerson", method = RequestMethod.GET)
 	public String searchByPerson() {	
@@ -42,7 +42,7 @@ public class ActorController extends AbstractController{
 			String actorID = "";
 			String pic = "";
 			
-			List<List<String>> nameResults = Actor.getActorID(name);
+			List<List<String>> nameResults = Person.getPersonID(name);
 			
 			List<String> nameArray = nameResults.get(0);
 			List<String> actorIdArray = nameResults.get(1);
@@ -62,7 +62,7 @@ public class ActorController extends AbstractController{
 	    	for(int i = 0; i < nameArray.size(); i++){
 	    		
 	    		actorID = actorIdArray.get(i);
-	    		picResults = Actor.getActorInfo(actorID);
+	    		picResults = Person.getPersonInfo(actorID);
 	    		pic = picResults.get(4);
 	    	    picArray.add(pic);
 	    		
@@ -91,7 +91,7 @@ public class ActorController extends AbstractController{
 		String actorID = "";
 		String pic = "";
 		
-		List<List<String>> nameResults = Actor.getActorID(name);
+		List<List<String>> nameResults = Person.getPersonID(name);
 		
 		List<String> nameArray = nameResults.get(0);
 		List<String> actorIdArray = nameResults.get(1);
@@ -111,7 +111,7 @@ public class ActorController extends AbstractController{
     	for(int i = 0; i < nameArray.size(); i++){
     		
     		actorID = actorIdArray.get(i);
-    		picResults = Actor.getActorInfo(actorID);
+    		picResults = Person.getPersonInfo(actorID);
     		pic = picResults.get(4);
     	    picArray.add(pic);
     		
@@ -137,7 +137,7 @@ public class ActorController extends AbstractController{
 		//code below returns actorInfo - name, birthdate, hometown, bio, picture
       try {
 
-		List<String> actorInfo = Actor.getActorInfo(actorID);
+		List<String> actorInfo = Person.getPersonInfo(actorID);
 		
 		String name = actorInfo.get(0);
 		String year = actorInfo.get(1);
@@ -166,7 +166,7 @@ public class ActorController extends AbstractController{
 		
 		//code below returns the actors filmography
 		
-		List<List<String>> castInfo = Actor.getFilmography(actorID);
+		List<List<String>> castInfo = Person.getFilmography(actorID);
 		
 		List<String> titles = castInfo.get(0);
 		List<String> movieIDs = castInfo.get(1);
@@ -201,7 +201,7 @@ public class ActorController extends AbstractController{
 	@RequestMapping(value = "/SearchPerson/{actorID}", method = RequestMethod.POST)
 	public String getFilmByActor(HttpServletRequest request,  @PathVariable String actorID, Model model) throws IOException {
 		
-		List<List<String>> castInfo = Actor.getFilmography(actorID);
+		List<List<String>> castInfo = Person.getFilmography(actorID);
 		
 		List<String> movieIDs = castInfo.get(1);
 		
