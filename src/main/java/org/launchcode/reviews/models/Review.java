@@ -74,11 +74,13 @@ public class Review extends AbstractEntity{
 	
 	public static String getFirstLine(Review review){
 		
-		String[] bodyLines = review.getBody().split(System.getProperty("line.separator"));
-		String firstLine = "";
+		//String[] bodyLines = review.getBody().split(System.getProperty("line.separator"));
+		//String firstLine = "";
+		//firstLine = bodyLines[0];
 		
-		firstLine = bodyLines[0];
-	
+		String body = review.getBody();
+		String firstLine = body.substring(0, Math.min(body.length(), 80));
+		
 		return firstLine;
 	}
 	
