@@ -24,11 +24,70 @@ public class ActorController extends AbstractController{
 	}
 	
 	@RequestMapping(value = "/SearchPerson", method = RequestMethod.POST)
-	public String searchPerson(HttpServletRequest request, Model model) throws IOException {
-		
-	try {
+	public String searchPerson(HttpServletRequest request, Model model){
 	
 		String name = request.getParameter("name");
+
+		return "redirect:/SearchPerson/name=" + name;
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/SearchPerson/name={name}", method = RequestMethod.GET)
+	public String getPersonByName(HttpServletRequest request, @PathVariable String name, Model model) {
+		
+		try {
+			
+			String actorID = "";
+			String pic = "";
+			
+			List<List<String>> nameResults = Actor.getActorID(name);
+			
+			List<String> nameArray = nameResults.get(0);
+			List<String> actorIdArray = nameResults.get(1);
+			List<String> picResults = new ArrayList<String>();
+			List<String> picArray = new ArrayList<String>();
+			
+	    	if(nameArray.size() == 0){
+	    		String error = "No result found, must type a valid name";
+	    		model.addAttribute("error", error);
+	    		return "err";
+	    	}
+	    	
+			model.addAttribute("name", name);   //displays the user provided name to be
+	    	model.addAttribute("nameArray", nameArray);  //searched, and provides the results 
+	    	model.addAttribute("actorIdArray", actorIdArray);
+	    	
+	    	for(int i = 0; i < nameArray.size(); i++){
+	    		
+	    		actorID = actorIdArray.get(i);
+	    		picResults = Actor.getActorInfo(actorID);
+	    		pic = picResults.get(4);
+	    	    picArray.add(pic);
+	    		
+		    	if(!picArray.get(i).contains("jpg")){
+	        		picArray.set(i, "/images/b/noImage.jpg");
+	        	}
+	    	}
+	    	
+	    	model.addAttribute("actorID", actorID);
+			model.addAttribute("picArray", picArray);
+	    	
+	    } catch (IOException e) {
+	    	String error = "No result found, must type a valid name";
+	    	model.addAttribute("error", error);
+	    	return "err";
+	    }
+		
+		return "person";
+	}
+	
+	@RequestMapping(value = "/SearchPerson/name={name}", method = RequestMethod.POST)
+	public String postPersonByName(HttpServletRequest request, @PathVariable String name,  Model model) throws IOException {
+		
+		String button = request.getParameter("button");
+		
 		String actorID = "";
 		String pic = "";
 		
@@ -39,8 +98,6 @@ public class ActorController extends AbstractController{
 		List<String> picResults = new ArrayList<String>();
 		List<String> picArray = new ArrayList<String>();
 		
-		String button = request.getParameter("button");
-	
     	if(nameArray.size() == 0){
     		String error = "No result found, must type a valid name";
     		model.addAttribute("error", error);
@@ -69,15 +126,8 @@ public class ActorController extends AbstractController{
     	
     	model.addAttribute("actorID", actorID);
 		model.addAttribute("picArray", picArray);
-    	
-    } catch (IOException e) {
-    	String error = "No result found, must type a valid name";
-    	model.addAttribute("error", error);
-    	return "err";
-    }
-    		
-	return "person";
 		
+		return "person";
 	}
 	
 	
@@ -122,7 +172,15 @@ public class ActorController extends AbstractController{
 		List<String> movieIDs = castInfo.get(1);
 		List<String> years = castInfo.get(2);
 		List<String> jobs = castInfo.get(3);
-			
+		
+		for(int i = 0; i < years.size(); i++){
+			if(years.get(i) == null || years.get(i).equals("") || 
+					years.get(i).equals("null") || years.get(i).equals("\"\"")){
+				
+				String yr = "Yr Not Found";
+				years.set(i, yr);
+			}
+		}	
 		
 		model.addAttribute("titles", titles);
 		model.addAttribute("movieIDs", movieIDs);
@@ -136,7 +194,7 @@ public class ActorController extends AbstractController{
     	return "err";
 	}
 		
-		return "actorInfo";
+      return "actorInfo";
 		
 	}
 	

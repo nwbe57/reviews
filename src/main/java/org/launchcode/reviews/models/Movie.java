@@ -18,7 +18,7 @@ public class Movie{
 	
 	
 	
-	public static List<List<String>> getSearchResults(String title, int page) throws IOException{
+	public static List<List<String>> getSearchResults(String title, String page) throws IOException{
 		
 		List<List<String>> searchResults = new ArrayList<List<String>>();
 	

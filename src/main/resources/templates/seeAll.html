@@ -9,9 +9,9 @@
 
 <div id="wrapper3">
 
-<h1 style="text-align: center;"><a class="author" th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
+<h1><a class="author" th:text="${author}"></a><a>&nbsp;</a>Movie Reviews!</h1>
 
-<h2 style="text-align: center;">
+<h2>
 	<a>Average Rating:&nbsp;</a>
 	<a th:text="${avgRating}"></a>
 </h2>
@@ -19,7 +19,7 @@
 <p th:text="${error}"></p>
 
 <table style="width: 100%; text-align: center;">
-	<tr th:each="review : ${reviews}">
+	<tr class="allReviews" th:each="review : ${reviews}">
 		<td>
 		
 			<h2>
@@ -31,9 +31,9 @@
 		
 			<a th:text="${review.rating}"></a>&nbsp;RATING<br></br><br></br>
 			
-			<a th:text="${review.body}"></a>
+			<p class="review-body" th:text="${review.body}"></p>
 			
-		    <p class="review-author">Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"
+		    <p>Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"
 		       th:text="${review.uid}"></a>
 		       &nbsp;written on <a th:text="${#dates.format(review.created, 'yyyy-MM-dd')}"></a> by 
 		       <a th:href="'/' + ${review.author.username}" 

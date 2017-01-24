@@ -19,7 +19,7 @@
 	    
 		Results:&nbsp;
 	     <div style="display: inline;" th:each="page: ${pageNum}">
-	     	<a th:href="'/SearchMovie/' + ${page}" th:text="${page}"></a>
+	     	<a th:href="'/SearchMovie/' + ${title} + '/' + ${page}" th:text="${page}"></a>
 	  	 </div>
 	    
 	    <div class="error" th:text="${error}"></div>
@@ -52,7 +52,7 @@
 		
 		 <br></br>
 	     <div style="display: inline;" th:each="page: ${pageNum}">
-	     	<a th:href="'/SearchMovie/' + ${page}" th:text="${page}"></a>
+	     	<a th:href="'/SearchMovie/' + ${title} + '/' + ${page}"></a>
 	  	 </div>
 	     <br></br><br></br>
 	    

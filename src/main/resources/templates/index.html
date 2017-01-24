@@ -11,7 +11,7 @@
 			<div id="welcome">
 				<a>Welcome to "Is It Worth Seeing?".
 				   Search current movies or your favorites from the past.<br></br>
-				   Read other people's reviews/ratings or create your own.</a>
+				   Read other people's reviews/ratings(0.0-10.0) or create your own.</a>
 			</div>		
 	
 <h1 style="text-align: center;"><a th:text="${author}"></a>&nbsp;Recent Reviews</h1>
@@ -34,8 +34,7 @@
 			<a th:text="${review.rating}"></a>&nbsp;RATING<br></br><br></br>
 			
 			
-			<p style="word-wrap: break-word; white-space: pre-wrap; margin-left:10%; margin-right:10%;" 
-			             th:text="${firstLines.get(reviews.indexOf(review)) + '.....'}"></p>
+			<p class="review-body" th:text="${firstLines.get(reviews.indexOf(review)) + '.....'}"></p>
 			
 			
 		    <p>Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"

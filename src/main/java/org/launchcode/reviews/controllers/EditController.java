@@ -17,14 +17,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class EditController extends AbstractController {
+	
+	@RequestMapping(value = "/edit/{username}", method = RequestMethod.GET)
+	public String editError(HttpServletRequest request, @PathVariable String username,
+			          Model model){
+		//do nothing...this URL attempt should just produce the error message
+		String error = "Must enter a valid username & review# to edit";
+		model.addAttribute("error", error);
+		return "err";
+	}
 		
 		
 	@RequestMapping(value = "/edit/{username}/{uid}", method = RequestMethod.GET)
 	public String editPost(HttpServletRequest request, @PathVariable String username,
 			         @PathVariable int uid, Model model) throws IOException {
-	
+		
 		User user = userDao.findByUsername(username);	
-			
+				
 		if(user.equals(getUserFromSession(request.getSession()))){
 			
 			Review review = reviewDao.findByUid(uid);
@@ -41,7 +50,7 @@ public class EditController extends AbstractController {
 			model.addAttribute("error", error);
 			return "err";
 		}
-			
+		
 	}
 		
 	

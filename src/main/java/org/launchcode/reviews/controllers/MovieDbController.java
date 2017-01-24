@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MovieDbController extends AbstractController{
 	
-	List<List<String>> nowPlaying = new ArrayList<>();
-	List<List<String>> titleResults = new ArrayList<>();
-	String title = "";
+	List<List<String>> nowPlaying = new ArrayList<>(); //declared these 2 arrays above the methods to be able
+	List<List<String>> titleResults = new ArrayList<>(); //to pass the same arrays from GET to POST of the
+	String title = "";                                             //same URL
 	
 	
 	@RequestMapping(value = "/SearchMovie", method = RequestMethod.GET)
@@ -35,59 +35,131 @@ public class MovieDbController extends AbstractController{
 	@RequestMapping(value = "/SearchMovie", method = RequestMethod.POST)
 	public String searchByTitle(HttpServletRequest request, Model model) throws IOException {
 		
-	try {
-		
 		String preTitle = request.getParameter("preTitle"); //the text the user inputs into the search field
 		
 		title = preTitle.trim().replace(' ', '+'); //preTitle altered to fit into url.....
 		                                                  // ex. "star wars" changed to "star+wars"
-		titleResults = Movie.getSearchResults(title,1);
-		
-		String button = request.getParameter("button");
-		
-		List<String> resultArray = titleResults.get(0);
-		List<String> idArray = titleResults.get(1);
-		List<String> yrArray = titleResults.get(2);
-		List<String> picArray = titleResults.get(3);
-		List<String> totalNum = titleResults.get(4);
-		
-    	if(resultArray.size() == 0){
-    		String error = "No result found, must type valid title";
-    		model.addAttribute("error", error);
-    		return "err";
-    	}
+		return "redirect:/SearchMovie/" + title;
     	
-    	for(int i = 0; i < yrArray.size(); i++){
-    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
-    			String noYr = "Yr Not Found";
-    			yrArray.set(i, noYr);
-    		}
-    		if(!picArray.get(i).contains("jpg")){
-        		picArray.set(i, "/images/b/noImage.jpg");
-        	}
-    	}
-    	
-    	Integer pages = Integer.parseInt(totalNum.get(0));
+    }
+	
+	
+	@RequestMapping(value = "/SearchMovie/{title}", method = RequestMethod.GET)
+	public String getTitleURL(HttpServletRequest request, @PathVariable String title, Model model) throws IOException {
 		
-		List<String> pageNum = new ArrayList<>();
+		try {
+			
+			String preTitle = request.getParameter("preTitle"); //the text the user inputs into the search field
+			
+			titleResults = Movie.getSearchResults(title,"1");
+			
+			List<String> resultArray = titleResults.get(0);
+			List<String> idArray = titleResults.get(1);
+			List<String> yrArray = titleResults.get(2);
+			List<String> picArray = titleResults.get(3);
+			List<String> totalNum = titleResults.get(4);
+			
+	    	if(resultArray.size() == 0){
+	    		String error = "No result found, must type valid title";
+	    		model.addAttribute("error", error);
+	    		return "err";
+	    	}
+	    	
+	    	for(int i = 0; i < yrArray.size(); i++){
+	    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
+	    			String noYr = "Yr Not Found";
+	    			yrArray.set(i, noYr);
+	    		}
+	    		if(!picArray.get(i).contains("jpg")){
+	        		picArray.set(i, "/images/b/noImage.jpg");
+	        	}
+	    	}
+	    	
+	    	Integer pages = Integer.parseInt(totalNum.get(0));
+			
+			List<String> pageNum = new ArrayList<>();
+			
+			for(int i = 1; i <= pages; i++){
+				pageNum.add(String.valueOf(i));
+			}
+			
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("preTitle", preTitle);   //displays the user provided title to be
+	    	model.addAttribute("resultArray", resultArray);  //searched, and provides the results from 
+	    	model.addAttribute("idArray", idArray);              //the tMDB database.
+	    	model.addAttribute("yrArray", yrArray);
+	    	model.addAttribute("picArray", picArray);
+	    	
+			
+		} catch (IOException e) {
+			String error = "No result found, must type valid title";
+			model.addAttribute("error", error);
+			return "err";
+		}			
 		
-		for(int i = 1; i <= pages; i++){
-			pageNum.add(String.valueOf(i));
-		}
-		
-		model.addAttribute("pageNum", pageNum);
-		model.addAttribute("preTitle", preTitle);   //displays the user provided title to be
-    	model.addAttribute("resultArray", resultArray);  //searched, and provides the results from 
-    	model.addAttribute("idArray", idArray);              //the tMDB database.
-    	model.addAttribute("yrArray", yrArray);
-    	model.addAttribute("picArray", picArray);
-    	
-    	try {
-
+		return "movie";
+	}
+	
+	
+	@RequestMapping(value = "/SearchMovie/{title}", method = RequestMethod.POST)
+	public String postTitleURL(HttpServletRequest request, @PathVariable String title, Model model) throws IOException {
+	
+		try{
+			
+			String preTitle = "";
+			String button = request.getParameter("button");
+			
+			if(button.equals("search")){
+				preTitle = request.getParameter("preTitle"); //the text the user inputs into the search field
+				
+				title = preTitle.trim().replace(' ', '+'); //preTitle altered to fit into url.....
+				                                                  // ex. "star wars" changed to "star+wars"
+				return "redirect:/SearchMovie/" + title;
+			}
+			
+			titleResults = Movie.getSearchResults(title,"1");
+			
+			List<String> resultArray = titleResults.get(0);
+			List<String> idArray = titleResults.get(1);
+			List<String> yrArray = titleResults.get(2);
+			List<String> picArray = titleResults.get(3);
+			List<String> totalNum = titleResults.get(4);
+			
+	    	if(resultArray.size() == 0){
+	    		String error = "No result found, must type valid title";
+	    		model.addAttribute("error", error);
+	    		return "err";
+	    	}
+	    	
+	    	for(int i = 0; i < yrArray.size(); i++){
+	    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
+	    			String noYr = "Yr Not Found";
+	    			yrArray.set(i, noYr);
+	    		}
+	    		if(!picArray.get(i).contains("jpg")){
+	        		picArray.set(i, "/images/b/noImage.jpg");
+	        	}
+	    	}
+	    	
+	    	Integer pages = Integer.parseInt(totalNum.get(0));
+			
+			List<String> pageNum = new ArrayList<>();
+			
+			for(int i = 1; i <= pages; i++){
+				pageNum.add(String.valueOf(i));
+			}
+			
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("preTitle", preTitle);   //displays the user provided title to be
+	    	model.addAttribute("resultArray", resultArray);  //searched, and provides the results from 
+	    	model.addAttribute("idArray", idArray);              //the tMDB database.
+	    	model.addAttribute("yrArray", yrArray);
+	    	model.addAttribute("picArray", picArray);
+	    	
 	    	for(int i = 0; i < idArray.size(); i++){
 	    		
 		    	if(button.equals(String.valueOf(i))){
-		    		
+		    
 		    		String movieID = "";
 		    		movieID = idArray.get(i);
 		    		model.addAttribute("movieID", movieID);
@@ -97,64 +169,89 @@ public class MovieDbController extends AbstractController{
 		    	
 	    	}
 	    	
-		} catch (IndexOutOfBoundsException e) {
-			String error = "Result not found";
+		} catch (IOException e) {
+			String error = "No result found, must type valid title";
+			model.addAttribute("error", error);
+			return "err";
+		}			
+	
+	return "movie";
+	}
+	
+	
+	@RequestMapping(value = "/SearchMovie/{title}/{page}", method = RequestMethod.GET)
+	public String getTitlePage(HttpServletRequest request, @PathVariable String page, @PathVariable String title, Model model) throws IOException{
+
+		String error = "Must enter a valid page #";
+		
+		try {
+			
+			titleResults = Movie.getSearchResults(title,page);
+			
+			List<String> resultArray = titleResults.get(0);
+			List<String> idArray = titleResults.get(1);
+			List<String> yrArray = titleResults.get(2);
+			List<String> picArray = titleResults.get(3);
+			List<String> totalNum = titleResults.get(4);
+			
+			for(int i = 0; i < yrArray.size(); i++){
+	    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
+	    			String noYr = "Yr Not Found";
+	    			yrArray.set(i, noYr);
+	    		}
+	    		if(!picArray.get(i).contains("jpg")){
+	        		picArray.set(i, "/images/b/noImage.jpg");
+	        	}
+	    	}
+			
+			int pages = Integer.parseInt(totalNum.get(0));
+			
+			List<String> pageNum = new ArrayList<>();
+			
+			for(int i = 1; i <= pages; i++){
+				pageNum.add(String.valueOf(i));
+			}
+			
+			try {
+				Integer pg = Integer.parseInt(page);
+				if(pg > pages || pg < 1){
+					model.addAttribute("error", error);
+					return "err";
+				}
+			} catch (NumberFormatException e) {
+				model.addAttribute("error", error);
+				return "err";
+			}
+			
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("resultArray", resultArray);  
+	    	model.addAttribute("idArray", idArray);             
+	    	model.addAttribute("yrArray", yrArray);
+	    	model.addAttribute("picArray", picArray);
+	    	model.addAttribute("title", title);
+	    	
+		} catch (IOException e) {
 			model.addAttribute("error", error);
 			return "err";
 		}
-		
-	} catch (IOException e) {
-		String error = "No result found, must type valid title";
-		model.addAttribute("error", error);
-		return "err";
-	}			
-    	return "movie";
-    	
-    }
-	
-	
-	@RequestMapping(value = "/SearchMovie/{page}", method = RequestMethod.GET)
-	public String getByPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
-		
-		titleResults = Movie.getSearchResults(title,page);
-		
-		List<String> resultArray = titleResults.get(0);
-		List<String> idArray = titleResults.get(1);
-		List<String> yrArray = titleResults.get(2);
-		List<String> picArray = titleResults.get(3);
-		List<String> totalNum = titleResults.get(4);
-		
-		for(int i = 0; i < yrArray.size(); i++){
-    		if(yrArray.get(i).equals("") || yrArray.get(i).equals("null")){
-    			String noYr = "Yr Not Found";
-    			yrArray.set(i, noYr);
-    		}
-    		if(!picArray.get(i).contains("jpg")){
-        		picArray.set(i, "/images/b/noImage.jpg");
-        	}
-    	}
-		
-		Integer pages = Integer.parseInt(totalNum.get(0));
-		
-		List<String> pageNum = new ArrayList<>();
-		
-		for(int i = 1; i <= pages; i++){
-			pageNum.add(String.valueOf(i));
-		}
-		
-		model.addAttribute("pageNum", pageNum);
-		model.addAttribute("resultArray", resultArray);  
-    	model.addAttribute("idArray", idArray);             
-    	model.addAttribute("yrArray", yrArray);
-    	model.addAttribute("picArray", picArray);
-		
-		return "movie";
+	    	
+	    	return "movie";
 	}
 	
-	@RequestMapping(value = "/SearchMovie/{page}", method = RequestMethod.POST)
-	public String postByPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
-		
+	@RequestMapping(value = "/SearchMovie/{title}/{page}", method = RequestMethod.POST)
+	public String postTitlePage(HttpServletRequest request, @PathVariable int page,  @PathVariable String title, Model model) throws IOException {
+			
 		String button = request.getParameter("button"); 
+		
+		String preTitle = "";
+		
+		if(button.equals("search")){
+			preTitle = request.getParameter("preTitle"); //the text the user inputs into the search field
+			
+			title = preTitle.trim().replace(' ', '+'); //preTitle altered to fit into url.....
+			                                                  // ex. "star wars" changed to "star+wars"
+			return "redirect:/SearchMovie/" + title;
+		}
 		
 		List<String> resultArray = titleResults.get(0);
 		List<String> idArray = titleResults.get(1);
@@ -181,6 +278,7 @@ public class MovieDbController extends AbstractController{
     	model.addAttribute("yrArray", yrArray);
     	model.addAttribute("picArray", picArray);
     	model.addAttribute("pageNum", pageNum);
+    	model.addAttribute("title", title);
 		
     	for(int i = 0; i < idArray.size(); i++){
     		
@@ -194,7 +292,6 @@ public class MovieDbController extends AbstractController{
 	    	}
 	    	
     	}
-		
 		return "movie";
 	}
 	
@@ -287,37 +384,52 @@ public class MovieDbController extends AbstractController{
 	
 	
 	@RequestMapping(value = "/NowPlaying/{page}", method = RequestMethod.GET)
-	public String getNowPlayingPage(HttpServletRequest request, @PathVariable int page, Model model) throws IOException {
+	public String getNowPlayingPage(HttpServletRequest request, @PathVariable String page, Model model) throws IOException {
+		try {
 		
-		nowPlaying = Movie.getNowPlaying(page);  
-		
-		List<String> resultArray = nowPlaying.get(0);
-		List<String> idArray = nowPlaying.get(1);
-		List<String> yrArray = nowPlaying.get(2);
-		List<String> picArray = nowPlaying.get(3);
-		List<String> totalNum = nowPlaying.get(4);
+			int pg = Integer.parseInt(page);
 			
-		for(int i = 0; i < picArray.size(); i++){
-			if(!picArray.get(i).contains("jpg")){
-	    		picArray.set(i, "/images/b/noImage.jpg");
-	    	}
-		}
-		
-		Integer pages = Integer.parseInt(totalNum.get(0));
-		
-		List<String> pageNum = new ArrayList<>();
+			nowPlaying = Movie.getNowPlaying(pg);  
 			
-		for(int i = 1; i <= pages; i++){
-			pageNum.add(String.valueOf(i));
+			List<String> resultArray = nowPlaying.get(0);
+			List<String> idArray = nowPlaying.get(1);
+			List<String> yrArray = nowPlaying.get(2);
+			List<String> picArray = nowPlaying.get(3);
+			List<String> totalNum = nowPlaying.get(4);
+				
+			for(int i = 0; i < picArray.size(); i++){
+				if(!picArray.get(i).contains("jpg")){
+		    		picArray.set(i, "/images/b/noImage.jpg");
+		    	}
+			}
+			
+			Integer pages = Integer.parseInt(totalNum.get(0));
+			
+	    		if(pg > pages){
+	    			String error = "Please enter a valid page number";
+	    			model.addAttribute("error", error);
+	    			return "err";
+	    		}
+			
+			List<String> pageNum = new ArrayList<>();
+				
+			for(int i = 1; i <= pages; i++){
+				pageNum.add(String.valueOf(i));
+			}
+			
+			model.addAttribute("resultArray", resultArray);   
+			model.addAttribute("idArray", idArray);
+	    	model.addAttribute("yrArray", yrArray);
+	    	model.addAttribute("picArray", picArray);
+	    	model.addAttribute("totalNum", totalNum);
+	    	model.addAttribute("pageNum", pageNum);
+    	
+		} catch (Exception e) {
+			String error = "Please enter a valid page number";
+			model.addAttribute("error", error);
+			return "err";
 		}
-		
-		model.addAttribute("resultArray", resultArray);   
-		model.addAttribute("idArray", idArray);
-    	model.addAttribute("yrArray", yrArray);
-    	model.addAttribute("picArray", picArray);
-    	model.addAttribute("totalNum", totalNum);
-    	model.addAttribute("pageNum", pageNum);
-		
+    	
 		return "nowPlaying";
 	}
 	
@@ -373,7 +485,7 @@ public class MovieDbController extends AbstractController{
 	}
 	
 	@RequestMapping(value = "/Movie/{movieID}", method = RequestMethod.GET)
-	public String movieIDGet(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
+	public String getMovieByID(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
 		model.addAttribute("movieID", movieID);
@@ -408,32 +520,32 @@ public class MovieDbController extends AbstractController{
 	        String rated = Movie.getContentRating(movieID);
 	        String trailer = Movie.getTrailer(movieID);
 	        
-	        	model.addAttribute("title", title);
-	        	
-	        	if(year == null || year.equals("\"\"") || year.equals("")){
-	        		year = "No Release Date Found";
-	        	}
-	        	
-	        	model.addAttribute("year", year);
+        	model.addAttribute("title", title);
+        	
+        	if(year == null || year.equals("\"\"") || year.equals("")){
+        		year = "No Release Date Found";
+        	}
+        	
+        	model.addAttribute("year", year);
 
-	        	if(tagline == null || tagline.equals("null") || tagline.equals("\"\"")){
-	        		tagline = "No Tagline Found";
-	        	}
-	        	
-	        	model.addAttribute("tagline", tagline);
+        	if(tagline == null || tagline.equals("null") || tagline.equals("\"\"")){
+        		tagline = "No Tagline Found";
+        	}
+        	
+        	model.addAttribute("tagline", tagline);
 
-	        	if(overview == null || overview.equals("null") || overview.equals("\"\"")){
-	        		overview = "No Overview Found";
-	        	}
-	        	
-	        	if(!picture.contains("jpg")){
-	        		picture = "/images/b/noImage.jpg";
-	        	}
-	        	
-	        	model.addAttribute("overview", overview);
-	        	model.addAttribute("picture", picture);
-	        	model.addAttribute("rated", rated);
-	        	model.addAttribute("trailer", trailer);
+        	if(overview == null || overview.equals("null") || overview.equals("\"\"")){
+        		overview = "No Overview Found";
+        	}
+        	
+        	if(!picture.contains("jpg")){
+        		picture = "/images/b/noImage.jpg";
+        	}
+        	
+        	model.addAttribute("overview", overview);
+        	model.addAttribute("picture", picture);
+        	model.addAttribute("rated", rated);
+        	model.addAttribute("trailer", trailer);
 	        	
 		
 		//code below returns cast/director names as links to their individual pages
@@ -467,7 +579,7 @@ public class MovieDbController extends AbstractController{
 	
 
 	@RequestMapping(value = "/Movie/{movieID}", method = RequestMethod.POST)
-	public String movieID(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
+	public String postMovieByID(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
 		List<List<String>> castInfo = Movie.getCast(movieID);
 		List<String> movieInfo = Movie.getMovieInfo(movieID);

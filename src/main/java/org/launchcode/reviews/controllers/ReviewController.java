@@ -1,5 +1,6 @@
 package org.launchcode.reviews.controllers;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,19 +26,26 @@ public class ReviewController extends AbstractController {
 	@RequestMapping(value = "/newpost/{movieID}", method = RequestMethod.GET)
 	public String newPostForm(HttpServletRequest request, @PathVariable String movieID, Model model) throws IOException {
 		
-		List<String> movieInfo = Movie.getMovieInfo(movieID);
+		try {
 		
-		User user = getUserFromSession(request.getSession());
-		if(user == null){
-			String error = "Must be logged in to write a review";
+			List<String> movieInfo = Movie.getMovieInfo(movieID);
+			
+			User user = getUserFromSession(request.getSession());
+			if(user == null){
+				String error = "Must be logged in to write a review";
+				model.addAttribute("error", error);
+				return "err";
+			}
+			
+	        String title = movieInfo.get(0);
+	        model.addAttribute("title", title);
+			model.addAttribute("movieID", movieID);
+		
+		} catch (FileNotFoundException e) {
+			String error = "Movie with ID#" + movieID + " not found";
 			model.addAttribute("error", error);
 			return "err";
 		}
-		
-        String title = movieInfo.get(0);
-        model.addAttribute("title", title);
-		model.addAttribute("movieID", movieID);
-		
 		return "newpost";
 	}
 	
@@ -86,7 +94,6 @@ public class ReviewController extends AbstractController {
 
 			reviewDao.save(review);
 		
-			
 			String username = author.getUsername();
 			int uid = review.getUid();
 			
@@ -104,14 +111,24 @@ public class ReviewController extends AbstractController {
 	
 	@RequestMapping(value = "/{username}/{uid}", method = RequestMethod.GET)
 	public String singlePost(HttpServletRequest request, @PathVariable String username,
-			                         @PathVariable int uid, Model model) {
+		                   @PathVariable String uid, Model model) {
+		int id = 0; 
+		String error = "There is no review with ID# " + uid + " for username " + username;
 		
-		Review review = reviewDao.findByUid(uid);
+		try {
+	        id = Integer.parseInt(uid); //catches exception when user tries to enter text instead
+	               //of int for uid.  Had to make PathVar uid a String to make this work.
+		} catch(NumberFormatException ex){ 
+	    	model.addAttribute("error", error);
+			return "err";
+	    }
 		
-		if(review == null){
-			String error = "There is no review with ID# " + uid + " for username " + username;
-			model.addAttribute("error", error);
+		Review review = reviewDao.findByUid(id);
+		List<Review> AllReviews = reviewDao.findAll();
+		
+		if(review == null || !AllReviews.contains(review)){
 			
+			model.addAttribute("error", error);
 			return "err";
 		}
 		
@@ -134,6 +151,10 @@ public class ReviewController extends AbstractController {
 				return "userReview";
 				
 			}
+		} else {
+			
+			model.addAttribute("error", error);
+			return "err";
 		}
 		
 		return "review";
