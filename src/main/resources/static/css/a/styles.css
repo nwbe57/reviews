@@ -23,6 +23,10 @@ input[type="text"], input[type="password"] {
     );
 }
 
+#actorBody img{
+	width: 35%;
+}
+
 #movieBody{
 	background: linear-gradient(
     to right, 
@@ -33,9 +37,22 @@ input[type="text"], input[type="password"] {
     );
 }
 
+#movieBody img{
+	width: 35%;
+}
+
 #infoLinks{
 	width:64%; 
 	float:right;
+}
+
+.right{
+	width:64%; 
+	float:right;
+}
+
+.bigButton{
+	font-size: 25px;
 }
 
 #infoLinks table{
@@ -80,11 +97,10 @@ nav{
 	font-size:25px;
 	margin-top: -0.6%;
 	background-color:#ffd966;
-	
 }
 
 #top-nav{
-	diplay: block;
+	display: block;
 }
 
 #bottom-nav{
@@ -110,3 +126,325 @@ nav{
 tr.allReviews td{
 	border-bottom: 1pt solid black;	
 } 
+
+.moviePic img{
+	height: 231px;
+}
+
+.movieRow td{
+	height: 235px;
+	border-bottom: 1pt solid black;
+}
+
+.actorPic img{
+	height: 131px;
+}
+
+.actorRow td{
+	height: 135px;
+	border-bottom: 1pt solid black;	
+} 
+
+
+
+
+@media only screen and (max-width: 1024px) {
+	
+	nav {
+		font-size:20px;
+		margin-top: -0.6%;
+		}
+		
+  	#welcome{
+		font-size: 20px;
+  		}
+  		
+  	#wrapper3{
+		margin-left:70px;
+		margin-right:70px;
+	}
+	
+	#wrapper2{
+		margin-left:70px;
+		margin-right:70px;
+	}
+	
+	#wrapper{
+		margin-left:70px;
+		margin-right:70px;
+	}
+	
+	h1 {
+		font-size: 25px;
+	}
+	
+	h2 {
+		font-size: 20px;
+	}
+	
+	#infoLinks{
+		width:74%; 
+		float: right;
+	}
+	
+	.right{
+		width:74%; 
+		float:right;
+	}
+		
+	#actorBody{
+		background: linear-gradient(
+	    to right, 
+	    #ff471a 0%, 
+	    #ff471a 26%, 
+	    #f9e440 26%, 
+	    #f9e440 100%
+	    );
+	}
+	
+	#actorBody img{
+		width: 25%;
+	}
+
+	#movieBody{
+		background: linear-gradient(
+	    to right, 
+	    #b6701e 0%, 
+	    #b6701e 26%, 
+	    #ff9e2c 26%, 
+	    #ff9e2c 100%
+	    );
+	}
+	
+	#movieBody img{
+		width: 25%;
+	}
+		
+}
+  
+	
+
+@media only all and (max-width: 900px) {
+	
+	nav, a, p {
+	     font-size: 15px;
+	}
+  	
+  	#welcome{
+		font-size: 15px;
+  	}
+
+	#wrapper3{
+		margin-left:50px;
+		margin-right:50px;
+	}
+	
+	#wrapper2{
+		margin-left:50px;
+		margin-right:50px;
+	}
+	
+	#wrapper{
+		margin-left:50px;
+		margin-right:50px;
+	}
+	
+	h1 {
+		font-size: 22px;
+	}
+	
+	h2 {
+		font-size: 17px;
+	}
+	
+	button{
+		height: 20px;
+		font-size: 70%;
+	}
+	
+	.moviePic img{
+		height: 200px;
+	}
+	
+	.movieRow td{
+		height: 204px;
+	}
+	
+	#infoLinks{
+		width:84%; 
+		float: right;
+	}
+	
+	.right{
+		width:84%; 
+		float:right;
+	}
+	
+	.bigButton{
+		height: 26px;
+		font-size: 90%;
+	}
+		
+	#actorBody{
+		background: linear-gradient(
+	    to right, 
+	    #ff471a 0%, 
+	    #ff471a 16%, 
+	    #f9e440 16%, 
+	    #f9e440 100%
+	    );
+	}
+	
+	#actorBody img{
+		width: 15%;
+	}
+
+	#movieBody{
+		background: linear-gradient(
+	    to right, 
+	    #b6701e 0%, 
+	    #b6701e 16%, 
+	    #ff9e2c 16%, 
+	    #ff9e2c 100%
+	    );
+	}
+	
+	#movieBody img{
+		width: 15%;
+	}
+		
+	.infoRow{
+		height: 20.5px;
+		font-size: 80%;
+	}
+	
+}		
+
+@media only all and (max-width: 628px) {
+	
+	nav, a, p {
+	    font-size: 12px;
+	}
+	
+	nav-div{
+		display: block;
+		width: 100%;
+	}
+  	
+  	#welcome{
+		font-size: 12px;
+  	}
+	
+	#wrapper3{
+		margin-left:0px;
+		margin-right:0px;
+	}
+	
+	#wrapper2{
+		margin-left:0px;
+		margin-right:0px;
+	}
+	
+	#wrapper{
+		margin-left:0px;
+		margin-right:0px;
+	}
+	
+	h1 {
+		font-size: 17px;
+	}
+	
+	
+	h2 {
+		font-size: 14px;
+	}
+	
+	button{
+		height: 17px;
+		font-size: 60%;
+	}
+	
+	.bigButton{
+		height: 22px;
+		font-size: 80%;
+	}
+	
+	.moviePic img{
+		height: 150px;
+	}
+	
+	.movieRow td{
+		height: 154px;
+	}
+		
+	.infoRow{
+		height: 20px;
+		font-size: 70%;
+	}
+	
+}		
+
+
+@media only all and (max-width: 428px) {
+
+	.moviePic img{
+		height: 0px;
+	}
+	
+	.actorPic img{
+		height: 0px;
+	}
+	
+	#infoLinks{
+		width:100%; 
+		float: right;
+	}
+	
+	.right{
+		width:100%; 
+		float:right;
+	}
+		
+	#actorBody{
+		background: linear-gradient(
+	    to right, 
+	    #ff471a 0%, 
+	    #ff471a 0%, 
+	    #f9e440 0%, 
+	    #f9e440 100%
+	    );
+	}
+	
+	#actorBody img{
+		width: 0%;
+	}
+
+	#movieBody{
+		background: linear-gradient(
+	    to right, 
+	    #b6701e 0%, 
+	    #b6701e 0%, 
+	    #ff9e2c 0%, 
+	    #ff9e2c 100%
+	    );
+	}
+	
+	#movieBody img{
+		width: 0%;
+	}
+	
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+

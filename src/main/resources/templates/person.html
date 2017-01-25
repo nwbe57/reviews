@@ -23,15 +23,15 @@
 	    <br></br>
 	    
 	     <table style="display: inline-block;">
-		<tr th:each="pic : ${picArray}">
-			<td height="131"><img style="height:131px;" th:src="${pic}" alt="No Picture Found"></img></td>
+		<tr class="actorPic" th:each="pic : ${picArray}">
+			<td><img th:src="${pic}" alt="No Picture Found"></img></td>
 		</tr>
 		</table>
 	    
 	    <table style="display: inline-block;">
-	    <tr th:each="name : ${nameArray}">
+	    <tr class="actorRow" th:each="name : ${nameArray}">
 	    	
-	    	<td height="135"><button style="width:100%" type="submit" name="button" 
+	    	<td><button style="width:100%" type="submit" name="button" 
 	    		
 	    		th:value="${nameArray.indexOf(name)}"
 	    		th:text="${name}"></button></td>	

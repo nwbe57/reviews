@@ -20,29 +20,25 @@
 	    <div class="error" th:text="${error}"></div>
 	    <br></br>
 	    
-	     <table style="display: inline-block;">
+	     <table class="moviePic" style="display: inline-block;">
 		<tr th:each="pic : ${picArray}">
-			<td height="231"><img style="height:231px;" th:src="${pic}" alt="No Picture Found"></img></td>
+			<td><img th:src="${pic}" alt="No Picture Found"></img></td>
 		</tr>
 		</table>
 	    
-	    <table style="display: inline-block;">
+	    <table class="movieRow" style="display: inline-block;">
 	    <tr th:each="id : ${idArray}">
 	    	
-	    	<td height="235"><button style="width:100%" type="submit" name="button" 
+	    	<td><button style="width:100%" type="submit" name="button" 
 	    		
 	    		th:value="${idArray.indexOf(id)}"
 	    		th:text="${resultArray.get(idArray.indexOf(id))}"></button>
+	    		<br></br><br></br>
+	    		<a th:text="${yrArray.get(idArray.indexOf(id))}"></a>
 	    		
 	    		<h3><a th:href="'/trailer/' + ${id}">WATCH TRAILER</a></h3>
 	    	</td>	
 	    </tr>
-		</table>
-		
-		<table style="display: inline-block;">
-		<tr th:each="year : ${yrArray}">
-			<td height="235" th:text="${year}"></td>
-		</tr>
 		</table>
 		
 		 <br></br>

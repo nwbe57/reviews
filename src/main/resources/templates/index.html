@@ -31,7 +31,7 @@
 		
 			<input type="hidden" th:value="${review.movieID}"></input>
 		
-			<a th:text="${review.rating}"></a>&nbsp;RATING<br></br><br></br>
+			<a th:text="${review.rating}"></a><a>&nbsp;RATING</a><br></br><br></br>
 			
 			
 			<p class="review-body" th:text="${firstLines.get(reviews.indexOf(review)) + '.....'}"></p>

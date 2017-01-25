@@ -31,7 +31,7 @@
 		
 			<a th:text="${review.rating}"></a>&nbsp;RATING<br></br><br></br>
 			
-			<p class="review-body" th:text="${review.body}"></p>
+			<p class="review-body" th:text="${firstLines.get(reviews.indexOf(review)) + '.....'}"></p>
 			
 		    <p>Review#&nbsp;<a th:href="'/' + ${review.author.username} + '/' + ${review.uid}"
 		       th:text="${review.uid}"></a>

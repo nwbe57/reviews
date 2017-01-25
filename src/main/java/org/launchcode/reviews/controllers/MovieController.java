@@ -39,6 +39,12 @@ public class MovieController extends AbstractController{
 		
 		title = preTitle.trim().replace(' ', '+'); //preTitle altered to fit into url.....
 		                                                  // ex. "star wars" changed to "star+wars"
+		if(title.equals("") || title == null){
+    		String error = "No result found, must type valid title";
+    		model.addAttribute("error", error);
+    		return "err";
+    	}
+		
 		return "redirect:/SearchMovie/" + title;
     	
     }
@@ -614,6 +620,7 @@ public class MovieController extends AbstractController{
 		if(button.equals("see_all")){
 			
 			List<Review> reviews = reviewDao.findByMovieID(movieID);
+			List<String> firstLines = new ArrayList<String>();
 			String error = "";
 			String author = movieInfo.get(0);
 			
@@ -628,7 +635,11 @@ public class MovieController extends AbstractController{
 				movieID = review.getMovieID();
 			
 				Double avgRating = review.getAvgRating(movieID, reviews);
-			
+				
+				String x = Review.getFirstLine(review);
+				firstLines.add(x);
+				
+				model.addAttribute("firstLines", firstLines);
 				model.addAttribute("reviews", reviews);
 				model.addAttribute("avgRating", avgRating);
 				

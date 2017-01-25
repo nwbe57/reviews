@@ -9,21 +9,21 @@
 
 	<form method="post">
 	
-		<div style="width:64%; float:right;">
+		<div class="right">
 	    	
 	    	
 	        <h1 th:value="${name}" th:text="${name}"></h1><br></br>
-	        BIRTHDATE
+	        <a>BIRTHDATE</a>
 	        <p th:value="${year}" th:text="${year}"></p><br></br>
-	        HOMETOWN
+	        <a>HOMETOWN</a>
 	        <p th:value="${hometown}" th:text="${hometown}"></p><br></br>
-	        BIOGRAPHY
+	        <a>BIOGRAPHY</a>
 	        <p th:value="${bio}" th:text="${bio}"></p><br></br>
-	        FILMOGRAPHY
+	        <a>FILMOGRAPHY</a>
 	    </div>
 	       
 	     <div style="font-size:35px;">
-	        <img style="width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
+	        <img style="float:left;" th:src="${picture}" alt="No Picture Found"></img>
 	     </div>  
 	
 	    <div id="infoLinks">
@@ -37,11 +37,12 @@
 		    </tr>
 		</table>
 		
+		
 		 <table>
 	    
 		    <tr th:each="year : ${years}">
 		    			
-		    	<td height="25" th:text="${year}"></td>
+		    	<td class="infoRow" height="25" th:text="${year}"></td>
 		    	
 		    </tr>
 		</table>
@@ -49,12 +50,13 @@
 		<table>  
 		    <tr th:each="job : ${jobs}">
 		    	
-		    	<td height="25" th:text="${job}"></td>
+		    	<td class="infoRow" height="25" th:text="${job}"></td>
 		   
 		    </tr>
 	    
 	    </table>
 	    </div> 
+	    
 	        <div class="error" th:text="${error}"></div>	
 	
 	</form>

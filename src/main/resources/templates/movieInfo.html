@@ -11,9 +11,9 @@
 	
 	<form method="post">
 		
-   		<div style="width:64%; float:right;"><br></br>
-   			<button style="font-size: 25px;" type="submit" value="see_all" name="button">See all Reviews for this Film</button>
-   			<button style="font-size: 25px;" type="submit" value="write" name="button">Write a Review for this Film</button><br></br>
+   		<div class="right"><br></br>
+   			<button class="bigButton" type="submit" value="see_all" name="button">See all Reviews for this Film</button>
+   			<button class="bigButton" type="submit" value="write" name="button">Write a Review for this Film</button><br></br>
       		    <h1 th:value="${title}" th:text="${title}"></h1>
       		   
       		    <h3><a th:href="'/trailer/' + ${movieID}">WATCH TRAILER</a></h3>
@@ -45,20 +45,23 @@
    		</div>
    		
    		<div>
-        	<img style="display:inline-block; width:35%; float:left;" th:src="${picture}" alt="No Picture Found"></img>
+        	<img style="float:left;" th:src="${picture}" alt="No Picture Found"></img>
      	</div>  	
    
-   		<div id="infoLinks">	
+   		<div id="infoLinks">
+   		
+   			
 		    <table>
 		    
 			    <tr th:each="char : ${charArray}">
 			    	
-			    	<td height="25" th:text="${char}"></td>
-			    	<td style="display:inline;">played by</td>
+			    	<td class="infoRow" height="25" th:text="${char}"></td>
+			    	<td class="infoRow" style="display:inline;">played by</td>
 			    	   	
 			    </tr>
 			</table>
-		
+		   
+		    
 			<table>
 		    
 			    <tr th:each="name : ${nameArray}">
