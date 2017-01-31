@@ -10,9 +10,9 @@
 
 	<form method="post">
 	    
-	    <h1 style="text-align: center;" th:value="${title}" th:text="${title}"><a>&nbsp;</a>Review!</h1>
+	    <h1 th:value="${title}" th:text="${title}"></h1>
 	    
-	    <div style="text-align: center;"> 
+	    <div> 
 		    <a>Rating (0.0 - 10.0)</a><br></br>
 		    <label>		 		        
 		        <input type="text" name="rating" th:value="${rating}"></input>
@@ -20,14 +20,14 @@
 	    </div>
 	    <br></br>
 	    
-	    <div style="text-align: center;"> 
+	    <div> 
 		    <a>Review</a><br></br>
 		    <label>
 		        <textarea name="body" th:text="${body}"></textarea>
 		    </label>
 	    </div>
 	    
-	    <div style="text-align: center;"> 
+	    <div> 
 		    <button type="submit">Create</button>
 	    </div>
 	    

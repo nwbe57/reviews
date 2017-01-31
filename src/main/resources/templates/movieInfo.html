@@ -5,7 +5,7 @@
 
 
 <body id="movieBody">
-	 
+		 
 	<div th:replace="template :: navigation"></div>
 	
 	
@@ -45,10 +45,10 @@
    		</div>
    		
    		<div>
-        	<img style="float:left;" th:src="${picture}" alt="No Picture Found"></img>
+        	<img th:src="${picture}" alt="No Picture Found"></img>
      	</div>  	
    
-   		<div id="infoLinks">
+   		<div id="infoLinks-movie">
    		
    			
 		    <table>
@@ -60,13 +60,12 @@
 			    	   	
 			    </tr>
 			</table>
-		   
-		    
+	
 			<table>
 		    
 			    <tr th:each="name : ${nameArray}">
 			    	    	
-			    	<td><button style="width:100%" type="submit" name="button" th:value="${nameArray.indexOf(name)}"
+			    	<td><button type="submit" style="width: 100%" name="button" th:value="${nameArray.indexOf(name)}"
 			    	                                        th:text="${name}"></button></td>		    	
 			    </tr>
 			</table>

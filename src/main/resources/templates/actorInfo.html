@@ -10,8 +10,7 @@
 	<form method="post">
 	
 		<div class="right">
-	    	
-	    	
+	    		    	
 	        <h1 th:value="${name}" th:text="${name}"></h1><br></br>
 	        <a>BIRTHDATE</a>
 	        <p th:value="${year}" th:text="${year}"></p><br></br>
@@ -22,16 +21,16 @@
 	        <a>FILMOGRAPHY</a>
 	    </div>
 	       
-	     <div style="font-size:35px;">
-	        <img style="float:left;" th:src="${picture}" alt="No Picture Found"></img>
+	     <div>
+	        <img th:src="${picture}" alt="No Picture Found"></img>
 	     </div>  
 	
-	    <div id="infoLinks">
+	    <div id="infoLinks-actor">
 	    <table>
 	    
 		    <tr th:each="title : ${titles}">
 		    	
-		    	<td><button style="width:100%" type="submit" name="button" th:value="${titles.indexOf(title)}"
+		    	<td><button type="submit" style="width: 100%" name="button" th:value="${titles.indexOf(title)}"
 		    	                                        th:text="${title}"></button></td>
 		    	
 		    </tr>
@@ -60,7 +59,7 @@
 	        <div class="error" th:text="${error}"></div>	
 	
 	</form>
-	
+
 </body>
 
 

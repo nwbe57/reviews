@@ -11,7 +11,7 @@
 
 	<form method="post">
 	
-		<h3 style="text-align: center;">
+		<h3>
 			Review# 
 			<a th:text="${review.uid}"></a>
 		</h3>
@@ -38,10 +38,10 @@
 	    <button type="submit" value="save" name="button">Save</button>
 	    <button type="submit" value="delete" name="button">Delete</button>
 	    
-	    <div class="error" th:text="${error}"></div>
 	</form>
 	
 	</div>
+	<div class="error" th:text="${error}"></div>
 
 </body>
 </html>

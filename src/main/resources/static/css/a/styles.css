@@ -25,13 +25,15 @@ input[type="text"], input[type="password"] {
 
 #actorBody img{
 	width: 35%;
+	font-size: 35px;
+	float: left;
 }
 
 #movieBody{
 	background: linear-gradient(
     to right, 
     #b6701e 0%, 
-    #b6701e 36%, 
+    #b6701e 36%,
     #ff9e2c 36%, 
     #ff9e2c 100%
     );
@@ -39,24 +41,39 @@ input[type="text"], input[type="password"] {
 
 #movieBody img{
 	width: 35%;
+	font-size: 35px;
+	float: left;
 }
 
-#infoLinks{
+#infoLinks-actor, #infoLinks-movie{
 	width:64%; 
 	float:right;
+	white-space: nowrap;
 }
 
 .right{
-	width:64%; 
+	width:64%;  
 	float:right;
+}
+
+.pageLinks{
+	width: 80%;
 }
 
 .bigButton{
 	font-size: 25px;
 }
 
-#infoLinks table{
+#infoLinks-actor table{
 	display: inline-block;
+	vertical-align:top;
+	background-color: #f9e440;
+}
+
+#infoLinks-movie table{
+	display: inline-block;
+	vertical-align:top;
+	background-color: #ff9e2c;
 }
 
 textarea {
@@ -75,7 +92,7 @@ textarea {
 	
 }
 
-#wrapper2{
+#wrapper2, #wrapper4{
 	margin-left:100px;
 	margin-right:100px;
 	height: 100%;
@@ -144,7 +161,7 @@ tr.allReviews td{
 	height: 135px;
 	border-bottom: 1pt solid black;	
 } 
-
+ 
 
 
 
@@ -153,28 +170,18 @@ tr.allReviews td{
 	nav {
 		font-size:20px;
 		margin-top: -0.6%;
-		}
+	}
 		
   	#welcome{
 		font-size: 20px;
-  		}
-  		
-  	#wrapper3{
+  	}
+ 
+	#wrapper, #wrapper2, #wrapper3, #wrapper4{
 		margin-left:70px;
 		margin-right:70px;
 	}
 	
-	#wrapper2{
-		margin-left:70px;
-		margin-right:70px;
-	}
-	
-	#wrapper{
-		margin-left:70px;
-		margin-right:70px;
-	}
-	
-	h1 {
+	h1, .h1 {
 		font-size: 25px;
 	}
 	
@@ -182,7 +189,7 @@ tr.allReviews td{
 		font-size: 20px;
 	}
 	
-	#infoLinks{
+	#infoLinks-actor, #infoLinks-movie{
 		width:74%; 
 		float: right;
 	}
@@ -200,6 +207,7 @@ tr.allReviews td{
 	    #f9e440 26%, 
 	    #f9e440 100%
 	    );
+	    
 	}
 	
 	#actorBody img{
@@ -234,22 +242,12 @@ tr.allReviews td{
 		font-size: 15px;
   	}
 
-	#wrapper3{
+	#wrapper, #wrapper2, #wrapper3, #wrapper4{
 		margin-left:50px;
 		margin-right:50px;
 	}
 	
-	#wrapper2{
-		margin-left:50px;
-		margin-right:50px;
-	}
-	
-	#wrapper{
-		margin-left:50px;
-		margin-right:50px;
-	}
-	
-	h1 {
+	h1, .h1 {
 		font-size: 22px;
 	}
 	
@@ -270,11 +268,11 @@ tr.allReviews td{
 		height: 204px;
 	}
 	
-	#infoLinks{
+	#infoLinks-actor, #infoLinks-movie{
 		width:84%; 
 		float: right;
 	}
-	
+
 	.right{
 		width:84%; 
 		float:right;
@@ -293,6 +291,7 @@ tr.allReviews td{
 	    #f9e440 16%, 
 	    #f9e440 100%
 	    );
+	    background-repeat: repeat-y; 
 	}
 	
 	#actorBody img{
@@ -307,6 +306,7 @@ tr.allReviews td{
 	    #ff9e2c 16%, 
 	    #ff9e2c 100%
 	    );
+	    background-repeat: repeat-y;
 	}
 	
 	#movieBody img{
@@ -335,7 +335,7 @@ tr.allReviews td{
 		font-size: 12px;
   	}
 	
-	#wrapper3{
+	#wrapper, #wrapper3, #wrapper4{
 		margin-left:0px;
 		margin-right:0px;
 	}
@@ -343,14 +343,10 @@ tr.allReviews td{
 	#wrapper2{
 		margin-left:0px;
 		margin-right:0px;
+		min-width: 500px;
 	}
 	
-	#wrapper{
-		margin-left:0px;
-		margin-right:0px;
-	}
-	
-	h1 {
+	h1, .h1 {
 		font-size: 17px;
 	}
 	
@@ -387,51 +383,6 @@ tr.allReviews td{
 
 @media only all and (max-width: 428px) {
 
-	.moviePic img{
-		height: 0px;
-	}
-	
-	.actorPic img{
-		height: 0px;
-	}
-	
-	#infoLinks{
-		width:100%; 
-		float: right;
-	}
-	
-	.right{
-		width:100%; 
-		float:right;
-	}
-		
-	#actorBody{
-		background: linear-gradient(
-	    to right, 
-	    #ff471a 0%, 
-	    #ff471a 0%, 
-	    #f9e440 0%, 
-	    #f9e440 100%
-	    );
-	}
-	
-	#actorBody img{
-		width: 0%;
-	}
-
-	#movieBody{
-		background: linear-gradient(
-	    to right, 
-	    #b6701e 0%, 
-	    #b6701e 0%, 
-	    #ff9e2c 0%, 
-	    #ff9e2c 100%
-	    );
-	}
-	
-	#movieBody img{
-		width: 0%;
-	}
 	
 }	
 

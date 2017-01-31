@@ -368,7 +368,8 @@ public class Movie{
         }
         while(matcherOver.find()){ 
         	String preOver = matcherOver.group(1);
-        	overview = preOver.replace('\\', ' ');
+        	String preOver2 = preOver.replace("&amp;", "&");
+        	overview = preOver2.replace('\\', ' ');
         }
         while(matcherPic.find()){
         	String pic = matcherPic.group(1);
@@ -444,7 +445,8 @@ public class Movie{
         List<String> directorID = new ArrayList<String>();
         
         while (matcherChar.find()) {                                  
-      	  	String charsFound = matcherChar.group(1);
+      	  	String preChars = matcherChar.group(1);
+      	  	String charsFound = preChars.replace("\\", "");
         	charArray.add(charsFound);	
         }
         while (matcherName.find()) {                                  
@@ -474,7 +476,7 @@ public class Movie{
         castInfo.add(charArray);
         castInfo.add(nameArray);
         castInfo.add(idArray);
-        castInfo.add(directorName); //director.get(0) = name, director.get(1) = ID#
+        castInfo.add(directorName); 
         castInfo.add(directorID);
         
 		return castInfo;

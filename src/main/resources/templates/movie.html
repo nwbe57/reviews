@@ -17,6 +17,7 @@
 	        <button type="submit" name="button" value="search">Search</button>
 	    </label>
 	    
+	    <br></br>
 		<a>Results:&nbsp;</a>
 	     <div style="display: inline;" th:each="page: ${pageNum}">
 	     	<a th:href="'/SearchMovie/' + ${title} + '/' + ${page}" th:text="${page}"></a>
