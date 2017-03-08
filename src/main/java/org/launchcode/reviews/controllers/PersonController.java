@@ -123,6 +123,9 @@ public class PersonController extends AbstractController{
         		picArray.set(i, "/images/b/noImage.jpg");
         	}
     	}
+    	if(button.equals("search")){
+    		return "redirect:/SearchPerson/name=" + request.getParameter("name");
+    	}
     	
     	model.addAttribute("actorID", actorID);
 		model.addAttribute("picArray", picArray);
